@@ -17,6 +17,10 @@ class Handler
     public const OPT_KEYWORDS_CLEAN = 'META_KEYWORDS_CLEAN';
     /** включать обработку страниц пагинации */
     public const OPT_PAGEN_ENABLE = 'META_PAGEN_ENABLE';
+    /** мета-тег robots по умолчанию (index, follow) */
+    public const OPT_ROBOTS_DEFAULT = 'META_ROBOTS_DEFAULT';
+    /** ручной запрет индексации (noindex, nofollow) - переопределяет dev-режим */
+    public const OPT_ROBOTS_NOINDEX = 'META_ROBOTS_NOINDEX';
     /** с какой страницы пагинации начинать добавлять пометку (обычно 2) */
     public const OPT_PAGEN_FROM = 'META_PAGEN_FROM';
     /** шаблон с макросом #PAGE# для <title> ($APPLICATION->SetTitle) */
@@ -45,16 +49,30 @@ class Handler
 
         $keywordsClean = Option::get(self::MODULE_ID, self::OPT_KEYWORDS_CLEAN, 'N', $siteId) === 'Y';
         $pagenEnable = Option::get(self::MODULE_ID, self::OPT_PAGEN_ENABLE, 'N', $siteId) === 'Y';
+        $robotsDefault = Option::get(self::MODULE_ID, self::OPT_ROBOTS_DEFAULT, 'N', $siteId) === 'Y';
+        $robotsNoindex = Option::get(self::MODULE_ID, self::OPT_ROBOTS_NOINDEX, 'N', $siteId) === 'Y';
 
-        if (!$keywordsClean && !$pagenEnable)
+        $needsUpdate = $keywordsClean || $pagenEnable || $robotsDefault || $robotsNoindex;
+        if (!$needsUpdate)
             return;
 
-        //1) очистка meta keywords - устанавливаем тег пустым
+        //1) мета-тег robots: ручной запрет индексации (приоритет выше всего)
+        if ($robotsNoindex) {
+            $APPLICATION->SetPageProperty('robots', 'noindex, nofollow');
+        } elseif (self::isDevServer()) {
+            //2) автоматический запрет индексации для dev-сервера (опция main.update_devsrv)
+            $APPLICATION->SetPageProperty('robots', 'noindex, nofollow');
+        } elseif ($robotsDefault) {
+            //3) принудительный index, follow по умолчанию
+            $APPLICATION->SetPageProperty('robots', 'index, follow');
+        }
+
+        //4) очистка meta keywords - устанавливаем тег пустым
         if ($keywordsClean && (string)$APPLICATION->GetProperty('keywords', '') !== '') {
             $APPLICATION->SetPageProperty('keywords', '');
         }
 
-        //2) страницы пагинации: добавляем номер страницы в title, description и заголовок страницы
+        //5) страницы пагинации: добавляем номер страницы в title, description и заголовок страницы
         if ($pagenEnable) {
             $pageNum = self::getPageNumber($request);
             $from = (int)Option::get(self::MODULE_ID, self::OPT_PAGEN_FROM, '2', $siteId);
@@ -64,6 +82,15 @@ class Handler
                 self::applyPagenTemplates($APPLICATION, $siteId, $pageNum);
             }
         }
+    }
+
+    /**
+     * Проверка: является ли сайт dev-сервером (опция main.update_devsrv)
+     */
+    protected static function isDevServer(): bool
+    {
+        $devsrv = Option::get('main', 'update_devsrv', '', false);
+        return $devsrv !== '' && $devsrv !== 'n';
     }
 
     /**
