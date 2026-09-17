@@ -168,6 +168,7 @@ if ($request->getRequestMethod()==='POST' && AccessController::isEditSettings() 
         Option::set($module_id, MetaHandler::OPT_PAGEN_ENABLE, (($metaPost['PAGEN_ENABLE'] ?? '') === 'Y') ? 'Y' : 'N', $lid);
         Option::set($module_id, MetaHandler::OPT_ROBOTS_DEFAULT, (($metaPost['ROBOTS_DEFAULT'] ?? '') === 'Y') ? 'Y' : 'N', $lid);
         Option::set($module_id, MetaHandler::OPT_ROBOTS_NOINDEX, (($metaPost['ROBOTS_NOINDEX'] ?? '') === 'Y') ? 'Y' : 'N', $lid);
+        Option::set($module_id, MetaHandler::OPT_ROBOTS_DEV, (($metaPost['ROBOTS_DEV'] ?? '') === 'Y') ? 'Y' : 'N', $lid);
         Option::set($module_id, MetaHandler::OPT_PAGEN_FROM, max(2, (int)($metaPost['PAGEN_FROM'] ?? 2)), $lid);
         Option::set($module_id, MetaHandler::OPT_PAGEN_TITLE, trim((string)($metaPost['PAGEN_TITLE_TEMPLATE'] ?? '')), $lid);
         Option::set($module_id, MetaHandler::OPT_PAGEN_DESCRIPTION, trim((string)($metaPost['PAGEN_DESCRIPTION_TEMPLATE'] ?? '')), $lid);
@@ -476,6 +477,7 @@ $ext = Extension::load("ui.alerts");
         $valPagenEnable = Option::get($module_id, MetaHandler::OPT_PAGEN_ENABLE, "N", $currentSite);
         $valRobotsDefault = Option::get($module_id, MetaHandler::OPT_ROBOTS_DEFAULT, "N", $currentSite);
         $valRobotsNoindex = Option::get($module_id, MetaHandler::OPT_ROBOTS_NOINDEX, "N", $currentSite);
+        $valRobotsDev = Option::get($module_id, MetaHandler::OPT_ROBOTS_DEV, "N", $currentSite);
         $valPagenFrom = (int)Option::get($module_id, MetaHandler::OPT_PAGEN_FROM, "2", $currentSite);
         $valPagenTitle = Option::get($module_id, MetaHandler::OPT_PAGEN_TITLE, "", $currentSite);
         $valPagenDesc = Option::get($module_id, MetaHandler::OPT_PAGEN_DESCRIPTION, "", $currentSite);
@@ -555,6 +557,17 @@ $ext = Extension::load("ui.alerts");
                         <span class="awz-switch__slider"></span>
                     </label>
                     <div class="awz-seo-row__desc"><?=Loc::getMessage('AWZ_SEO_OPT_META_ROBOTS_NOINDEX_DESC')?></div>
+                </div>
+            </div>
+
+            <div class="awz-seo-row">
+                <div class="awz-seo-row__label"><?=Loc::getMessage('AWZ_SEO_OPT_META_ROBOTS_DEV')?></div>
+                <div class="awz-seo-row__ctrl">
+                    <label class="awz-switch">
+                        <input type="checkbox" value="Y" name="META[ROBOTS_DEV]" <?if($valRobotsDev=="Y") echo "checked";?><?=$disabledAttr?>>
+                        <span class="awz-switch__slider"></span>
+                    </label>
+                    <div class="awz-seo-row__desc"><?=Loc::getMessage('AWZ_SEO_OPT_META_ROBOTS_DEV_DESC')?></div>
                 </div>
             </div>
         </div>

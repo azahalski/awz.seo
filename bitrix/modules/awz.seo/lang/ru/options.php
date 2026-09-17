@@ -72,6 +72,8 @@ $MESS['AWZ_SEO_OPT_META_ROBOTS_DEFAULT'] = "Принудительный robots 
 $MESS['AWZ_SEO_OPT_META_ROBOTS_DEFAULT_DESC'] = "На все страницы выводится meta-тег robots с значением «index, follow». Работает только если не включён принудительный запрет индексации и сайт не является dev-версией";
 $MESS['AWZ_SEO_OPT_META_ROBOTS_NOINDEX'] = "Принудительный запрет индексации (noindex, nofollow)";
 $MESS['AWZ_SEO_OPT_META_ROBOTS_NOINDEX_DESC'] = "На все страницы выводится meta-тег robots с значением «noindex, nofollow». Переопределяет dev-режим и опцию index, follow. Используйте для полного запрета индексации сайта";
+$MESS['AWZ_SEO_OPT_META_ROBOTS_DEV'] = "Запрет индексации для dev-сервера";
+$MESS['AWZ_SEO_OPT_META_ROBOTS_DEV_DESC'] = "Если сайт является dev-версией (в главном модуле установлена соответствующая опция), на все страницы выводится meta-тег robots с значением «noindex, nofollow»";
 $MESS['AWZ_SEO_OPT_SITE_SUB'] = "Настройки хранятся отдельно для каждого сайта (многосайтовость)";
 $MESS['AWZ_SEO_OPT_REDIRECT_SUB'] = "Обрабатываются на событии OnPageStart, код ответа 301/302 настраивается ниже";
 $MESS['AWZ_SEO_OPT_CANONICAL_SUB'] = "Тег link rel=\"canonical\" добавляется на событии OnEpilog";

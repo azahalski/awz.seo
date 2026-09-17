@@ -21,6 +21,8 @@ class Handler
     public const OPT_ROBOTS_DEFAULT = 'META_ROBOTS_DEFAULT';
     /** ручной запрет индексации (noindex, nofollow) - переопределяет dev-режим */
     public const OPT_ROBOTS_NOINDEX = 'META_ROBOTS_NOINDEX';
+    /** автоматический запрет индексации для dev-сервера (noindex, nofollow) */
+    public const OPT_ROBOTS_DEV = 'META_ROBOTS_DEV';
     /** с какой страницы пагинации начинать добавлять пометку (обычно 2) */
     public const OPT_PAGEN_FROM = 'META_PAGEN_FROM';
     /** шаблон с макросом #PAGE# для <title> ($APPLICATION->SetTitle) */
@@ -51,16 +53,17 @@ class Handler
         $pagenEnable = Option::get(self::MODULE_ID, self::OPT_PAGEN_ENABLE, 'N', $siteId) === 'Y';
         $robotsDefault = Option::get(self::MODULE_ID, self::OPT_ROBOTS_DEFAULT, 'N', $siteId) === 'Y';
         $robotsNoindex = Option::get(self::MODULE_ID, self::OPT_ROBOTS_NOINDEX, 'N', $siteId) === 'Y';
+        $robotsDev = Option::get(self::MODULE_ID, self::OPT_ROBOTS_DEV, 'N', $siteId) === 'Y';
 
-        $needsUpdate = $keywordsClean || $pagenEnable || $robotsDefault || $robotsNoindex;
+        $needsUpdate = $keywordsClean || $pagenEnable || $robotsDefault || $robotsNoindex || $robotsDev;
         if (!$needsUpdate)
             return;
 
         //1) мета-тег robots: ручной запрет индексации (приоритет выше всего)
         if ($robotsNoindex) {
             $APPLICATION->SetPageProperty('robots', 'noindex, nofollow');
-        } elseif (self::isDevServer()) {
-            //2) автоматический запрет индексации для dev-сервера (опция main.update_devsrv)
+        } elseif ($robotsDev && self::isDevServer()) {
+            //2) автоматический запрет индексации для dev-сервера (опция main.update_devsrv + включена опция META_ROBOTS_DEV)
             $APPLICATION->SetPageProperty('robots', 'noindex, nofollow');
         } elseif ($robotsDefault) {
             //3) принудительный index, follow по умолчанию
@@ -89,8 +92,8 @@ class Handler
      */
     protected static function isDevServer(): bool
     {
-        $devsrv = Option::get('main', 'update_devsrv', '', false);
-        return $devsrv !== '' && $devsrv !== 'n';
+        $devsrv = Option::get('main', 'update_devsrv', 'N', false);
+        return $devsrv === 'Y';
     }
 
     /**
