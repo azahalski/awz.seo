@@ -31,7 +31,7 @@ if(AccessController::isViewSettings() || AccessController::isViewRight()){
 }
 if(empty($items)) return;
 $aMenu[] = array(
-    "parent_menu" => "global_menu_settings",
+    "parent_menu" => "global_menu_marketing",
     "section" => str_replace('.','_',$module_id),
     "sort" => 100,
     "module_id" => $module_id,

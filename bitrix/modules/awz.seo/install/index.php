@@ -124,6 +124,18 @@ class awz_seo extends CModule
             'main', 'OnAfterUserAdd',
             $this->MODULE_ID, '\\Awz\\Seo\\Access\\Handlers', 'OnAfterUserUpdate'
         );
+        $eventManager->registerEventHandlerCompatible(
+            'main', 'OnPageStart',
+            $this->MODULE_ID, '\\Awz\\Seo\\Redirect\\Handler', 'OnPageStart'
+        );
+        $eventManager->registerEventHandlerCompatible(
+            'main', 'OnEpilog',
+            $this->MODULE_ID, '\\Awz\\Seo\\Canonical\\Handler', 'OnEpilog'
+        );
+        $eventManager->registerEventHandlerCompatible(
+            'main', 'OnEpilog',
+            $this->MODULE_ID, '\\Awz\\Seo\\Meta\\Handler', 'OnEpilog'
+        );
         return true;
     }
 
@@ -137,6 +149,18 @@ class awz_seo extends CModule
         $eventManager->unRegisterEventHandler(
             'main', 'OnAfterUserAdd',
             $this->MODULE_ID, '\\Awz\\Seo\\Access\\Handlers', 'OnAfterUserUpdate'
+        );
+        $eventManager->unRegisterEventHandler(
+            'main', 'OnPageStart',
+            $this->MODULE_ID, '\\Awz\\Seo\\Redirect\\Handler', 'OnPageStart'
+        );
+        $eventManager->unRegisterEventHandler(
+            'main', 'OnEpilog',
+            $this->MODULE_ID, '\\Awz\\Seo\\Canonical\\Handler', 'OnEpilog'
+        );
+        $eventManager->unRegisterEventHandler(
+            'main', 'OnEpilog',
+            $this->MODULE_ID, '\\Awz\\Seo\\Meta\\Handler', 'OnEpilog'
         );
         return true;
     }
