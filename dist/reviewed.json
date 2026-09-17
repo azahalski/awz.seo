@@ -1,0 +1,217 @@
+{
+  "success": true,
+  "requestId": "awz.seo-1789665082",
+  "data": {
+    "vulnerabilities": [
+      {
+        "file": "install/unstep.php",
+        "line": "13",
+        "type": "Information Disclosure",
+        "severity": "low",
+        "description": "Подозрение: В строке 13 используется IncludeModuleLangFile с конкатенированным путём, где переменная $moduleId встроена в строку в одинарных кавычках: IncludeModuleLangFile($_SERVER[\"DOCUMENT_ROOT\"].\"/bitrix/modules/'.$moduleId.'/install/install.php\"). Поскольку используются одинарные кавычки, переменная $moduleId не будет раскрыта — в путь будет дословно включена строка '.$moduleId.'. Это приводит к тому, что файл языковых констант не находится (false path), что является функциональным багом. Как уязвимость: если бы использовались двойные кавычки, это позволяло бы контролировать путь к файлу через $moduleId, что потенциально могло бы привести к LFI. Однако текущий код не эксплуатируется напрямую — путь формируется из структуры модуля.",
+        "recommendation": "Использовать двойные кавычки для строки с переменной или конкатенацию с отдельными одинарными кавычками: IncludeModuleLangFile($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$moduleId.'/install/install.php')",
+        "fix": "Before:\nIncludeModuleLangFile($_SERVER[\"DOCUMENT_ROOT\"].\"/bitrix/modules/'.$moduleId.'/install/install.php\");\n\nAfter:\nIncludeModuleLangFile($_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/'.$moduleId.'/install/install.php');",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
+          "changed": false,
+          "category": "path-disclosure-hygiene",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "remove-debug-output",
+          "confidence": "high",
+          "rationale": "Kept/downgraded to low because absolute path disclosure is useful reconnaissance but usually does not create direct compromise in BUS without another vulnerability."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T17:18:24+00:00"
+        }
+      },
+      {
+        "file": "install/solution.php",
+        "line": "10",
+        "type": "Open Redirect",
+        "severity": "medium",
+        "description": "Подозрение: В строке 10 используется LocalRedirect с конкатенацией параметров URL: LocalRedirect('/bitrix/admin/settings.php?lang='.LANG.'&mid='.$MODULE_ID). Хотя LocalRedirect обычно проверяет, что URL начинается с '/', и предотвращает protocol-relative ссылки, параметр LANG может быть изменён через сессию/запрос. В данном случае LANG — это глобальная переменная Bitrix, которая обычно установлена при админ-запросе. Риск минимален, но теоретически возможно управление LANG извне.",
+        "recommendation": "Использовать htmlspecialcharsbx для LANG даже в LocalRedirect, или явно задать язык из константы модуля вместо глобальной переменной.",
+        "fix": "Before:\nLocalRedirect('/bitrix/admin/settings.php?lang='.LANG.'&mid='.$MODULE_ID);\n\nAfter:\nLocalRedirect('/bitrix/admin/settings.php?lang='.htmlspecialcharsbx(LANG).'&mid='.$MODULE_ID);",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "medium",
+          "changed": true,
+          "category": "open-redirect-unclear-source",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "validate-source-and-allowlist",
+          "confidence": "low",
+          "rationale": "Left as medium pending confirmation of whether the redirect target is request-controlled or only editable by trusted administrators."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T17:18:24+00:00"
+        }
+      },
+      {
+        "file": "install/components/seo.config.permissions/ajax.php",
+        "line": "110-168",
+        "type": "IDOR",
+        "severity": "medium",
+        "description": "Подтверждена уязвимость IDOR в методе saveRoleSettings (строки 110-168). Метор принимает $roleSettings из $_POST (через Engine Controller) и сохраняет данные роли без проверки, что текущий пользователь является владельцем или имеет право на эту конкретную роль. Данные передаются напрямую: $roleId = $roleSettings['id'], $roleTitle = $roleSettings['title']. Хотя id приводится к int через prepareSettings, нет проверки принадлежности роли (ownership check) — авторизованный пользователь может изменить любую роль в системе, а не только свои.",
+        "recommendation": "Добавить проверку прав доступа к конкретной роли перед её обновлением. Использовать AccessController::can() с itemId для проверки права на конкретную роль.",
+        "fix": "Before:\nprivate function saveRoleSettings(array $roleSettings)\n{\n    $roleSettings = $this->prepareSettings($roleSettings);\n    $roleId = $roleSettings['id'];\n    // ...\n}\n\nAfter:\nprivate function saveRoleSettings(array $roleSettings)\n{\n    $roleSettings = $this->prepareSettings($roleSettings);\n    $roleId = $roleSettings['id'];\n    \n    if ($roleId !== 0 && !AccessController::can(\\Bitrix\\Main\\Engine\\CurrentUser::get()?->getId(), 'role_edit', $roleId)) {\n        $this->errorCollection[] = new Error(Loc::getMessage('AWZ_CONFIG_PERMISSION_ERROR_NO_ACCESS'));\n        return;\n    }\n    // ...\n}",
+        "reviewed": {
+          "oldSeverity": "medium",
+          "newSeverity": "medium",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T17:18:24+00:00"
+        }
+      },
+      {
+        "file": "lib/access/handlers.php",
+        "line": "11-31",
+        "type": "SQL Injection",
+        "severity": "medium",
+        "description": "Подозрение: В методе OnAfterUserUpdate (строки 11-31) SQL-запрос генерируется через конкатенацию значений в форматной строке. Хотя $userId и $row['GROUP_ID'] приводятся к int перед использованием, значение $arFields['ID'] также приводится к int. Sql-хелпер Bitrix getInsertIgnore формирует INSERT IGNORE запрос. Потенциальный риск минимален благодаря приведению типов, но паттерн конкатенации в SQL-строках остаётся.",
+        "recommendation": "Использовать ORM-методы UserGroupTable::add() вместо прямого SQL для лучшей безопасности и переносимости.",
+        "fix": "Before:\n$sqlValues[] = '('.$userId.',\\'group\\',\\'G'.$id.'\\')';\n// ...\n$sql = $helper->getInsertIgnore(\n    'b_user_access',\n    '(USER_ID, PROVIDER_ID, ACCESS_CODE)',\n    'VALUES '.implode(',', $sqlValues)\n);\n$connection->query($sql);\n\nAfter:\nforeach ($sqlValuesRaw as $userData) {\n    UserGroupTable::add([\n        'USER_ID' => $userData['userId'],\n        'PROVIDER_ID' => 'group',\n        'ACCESS_CODE' => 'G'.$userData['groupId']\n    ]);\n}",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "medium",
+          "changed": true,
+          "category": "sql-injection",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "parameterize-query",
+          "confidence": "medium",
+          "rationale": "Kept as medium by default under the BUS Marketplace triage policy; raise only when exploit impact is proven beyond the journal text."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T17:18:24+00:00"
+        }
+      }
+    ],
+    "summary": "Обнаружено 4 уязвимостей в 4 файлах при анализе 47 файлов модуля. Максимальная severity: medium. Основная проблема — IDOR в AJAX-контроллере настроек прав доступа (install/components/seo.config.permissions/ajax.php), где отсутствует проверка ownership при редактировании ролей. Также найдены low-severity проблемы: баг со строковой константой в unstep.php, потенциальный Open Redirect в solution.php и паттерн конкатенации в SQL в handlers.php.",
+    "scannedFiles": 47,
+    "riskLevel": "medium",
+    "auditedFiles": [
+      "options.php",
+      "admin/menu.php",
+      "install/index.php",
+      "install/unstep.php",
+      "install/solution.php",
+      "install/version.php",
+      "install/components/seo.config.permissions/ajax.php",
+      "install/components/seo.config.permissions/lang/ru/ajax.php",
+      "include.php",
+      "lib/access/accesscontroller.php",
+      "lib/access/handlers.php",
+      "lib/access/component/configpermissions.php",
+      "lib/access/custom/actiondictionary.php",
+      "lib/access/custom/componentconfig.php",
+      "lib/access/custom/helper.php",
+      "lib/access/custom/permissiondictionary.php",
+      "lib/access/custom/roledictionary.php",
+      "lib/access/custom/rules/example.php",
+      "lib/access/entity/user.php",
+      "lib/access/entityselectors/group.php",
+      "lib/access/entityselectors/user.php",
+      "lib/access/include/moduleright.php",
+      "lib/access/model/basemodel.php",
+      "lib/access/model/usermodel.php",
+      "lib/access/permission/actiondictionary.php",
+      "lib/access/permission/permissiondictionary.php",
+      "lib/access/permission/roleutil.php",
+      "lib/access/permission/rulefactory.php",
+      "lib/access/permission/rules/rightedit.php",
+      "lib/access/permission/rules/rightview.php",
+      "lib/access/permission/rules/settedit.php",
+      "lib/access/permission/rules/settview.php",
+      "lib/access/tables/permission.php",
+      "lib/access/tables/role.php",
+      "lib/access/tables/rolerelation.php",
+      "lang/ru/options.php",
+      "lang/ru/admin/menu.php",
+      "lang/ru/install/index.php",
+      "lang/ru/lib/access/component/configpermissions.php",
+      "lang/ru/lib/access/custom/permissiondictionary.php",
+      "lang/ru/lib/access/entityselectors/group.php",
+      "lang/ru/lib/access/entityselectors/user.php",
+      "lang/ru/lib/access/include/moduleright.php",
+      "lang/ru/lib/access/permission/permissiondictionary.php",
+      "install/db/mysql/access.sql",
+      "install/db/mysql/unaccess.sql",
+      "install/db/pgsql/access.sql",
+      "install/db/pgsql/unaccess.sql"
+    ],
+    "reviewSummary": {
+      "reviewedAt": "2026-09-17",
+      "method": "BUS-aware triage: preserve original finding fields except severity, add reviewed node with old severity and rationale.",
+      "totals": {
+        "vulnerabilities": 4,
+        "changedSeverity": 2,
+        "unchangedSeverity": 2
+      },
+      "rawSeverityCounts": {
+        "low": 3,
+        "medium": 1
+      },
+      "reviewedSeverityCounts": {
+        "low": 1,
+        "medium": 3
+      },
+      "currentScope": {
+        "total": 4,
+        "rawSeverityCounts": {
+          "low": 3,
+          "medium": 1
+        },
+        "reviewedSeverityCounts": {
+          "low": 1,
+          "medium": 3
+        },
+        "reviewedCategories": {
+          "path-disclosure-hygiene": 1,
+          "open-redirect-unclear-source": 1,
+          "kept-as-reported": 1,
+          "sql-injection": 1
+        }
+      },
+      "historicalUpdatePackages": {
+        "total": 0,
+        "rawSeverityCounts": {},
+        "reviewedSeverityCounts": {},
+        "reviewedCategories": {}
+      },
+      "caveats": [
+        "Type, file, line, description, recommendation and fix are preserved from the source journal.",
+        "Severity is replaced with reviewed triage severity."
+      ]
+    },
+    "feedbackSummary": {
+      "updatedAt": "2026-09-17T17:18:24+00:00",
+      "applied": 4
+    }
+  }
+}
