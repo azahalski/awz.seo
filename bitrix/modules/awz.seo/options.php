@@ -13,6 +13,74 @@ use Awz\Seo\Redirect\Handler as RedirectHandler;
 use Awz\Seo\Canonical\Handler as CanonicalHandler;
 use Awz\Seo\Meta\Handler as MetaHandler;
 
+/**
+ * Разбирает содержимое CSV с парами "старый URL, новый URL".
+ * Разделитель - запятая или точка с запятой (определяется автоматически по первой строке).
+ * "Старый URL" может быть полным (с https:// и хостом) или путём.
+ * @param string $content содержимое CSV-файла
+ * @return array массив [['FROM'=>..,'TO'=>..], ...]
+ */
+function awz_seo_parse_csv_content(string $content): array
+{
+    if (trim($content) === '')
+        return [];
+
+    //убираем BOM
+    $content = (string)preg_replace('/^\xEF\xBB\xBF/', '', $content);
+
+    //определяем разделитель по первой строке: запятая или точка с запятой
+    $firstLine = (string)strtok($content, "\r\n");
+    $separator = (substr_count($firstLine, ';') > substr_count($firstLine, ',')) ? ';' : ',';
+
+    $rows = [];
+    $lines = preg_split('/\r\n|\r|\n/', $content);
+    foreach ($lines as $line) {
+        $line = trim((string)$line);
+        if ($line === '')
+            continue;
+        $parts = str_getcsv($line, $separator);
+        if (!is_array($parts) || count($parts) < 2)
+            continue;
+        $from = trim((string)$parts[0]);
+        $to = trim((string)$parts[1]);
+        if ($from === '' || $to === '')
+            continue;
+        $rows[] = ['FROM' => $from, 'TO' => $to];
+    }
+    return $rows;
+}
+
+/**
+ * Читает CSV-файл по пути (относительно DOCUMENT_ROOT) и разбирает его.
+ * @param string $relativePath путь к файлу (например, /upload/redirects.csv)
+ * @return array массив [['FROM'=>..,'TO'=>..], ...]
+ */
+function awz_seo_read_csv_from_path(string $relativePath): array
+{
+    $relativePath = trim($relativePath);
+    if ($relativePath === '')
+        return [];
+    //санитизация: убираем ".." и нормализуем путь
+    $relativePath = str_replace(['..', '\\'], '', $relativePath);
+    $relativePath = ltrim($relativePath, '/');
+    if ($relativePath === '')
+        return [];
+    $fullPath = $_SERVER['DOCUMENT_ROOT'].'/'.$relativePath;
+    //проверка, что путь не выходит за пределы DOCUMENT_ROOT
+    $realPath = realpath($fullPath);
+    $docRoot = realpath($_SERVER['DOCUMENT_ROOT']);
+    if ($realPath === false || $docRoot === false)
+        return [];
+    if (strpos($realPath, $docRoot) !== 0)
+        return [];
+    if (!is_file($realPath))
+        return [];
+    $content = @file_get_contents($realPath);
+    if ($content === false)
+        return [];
+    return awz_seo_parse_csv_content($content);
+}
+
 Loc::loadMessages(__FILE__);
 global $APPLICATION;
 $module_id = "awz.seo";
@@ -65,6 +133,11 @@ if ($request->getRequestMethod()==='POST' && AccessController::isEditSettings() 
         }
         $code = (string)($redirectPost['CODE'] ?? '301');
         Option::set($module_id, RedirectHandler::OPT_CODE, ($code === '302') ? '302' : '301', $lid);
+        $www = (string)($redirectPost['WWW'] ?? 'N');
+        if(!in_array($www, ['N','W','NW'], true)) $www = 'N';
+        Option::set($module_id, RedirectHandler::OPT_WWW, $www, $lid);
+        $csvPath = trim((string)($redirectPost['CSV_PATH'] ?? ''));
+        Option::set($module_id, RedirectHandler::OPT_CUSTOM, $csvPath, $lid);
         //canonical
         $canonicalPost = $request->getPost('CANONICAL') ?: [];
         if(!is_array($canonicalPost)) $canonicalPost = [];
@@ -220,6 +293,9 @@ $ext = Extension::load("ui.alerts");
         $val3 = Option::get($module_id, RedirectHandler::OPT_HTTPS, "N", $currentSite);
         $val4 = Option::get($module_id, RedirectHandler::OPT_INDEX_SLASH, "N", $currentSite);
         $valCode = Option::get($module_id, RedirectHandler::OPT_CODE, "301", $currentSite);
+        $valWww = Option::get($module_id, RedirectHandler::OPT_WWW, "N", $currentSite);
+        $valCsvPath = Option::get($module_id, RedirectHandler::OPT_CUSTOM, "", $currentSite);
+        $customRedirectsCount = count(RedirectHandler::getCustomRedirects($currentSite));
         ?>
         <div class="awz-seo-card">
             <div class="awz-seo-card__head">
@@ -259,6 +335,40 @@ $ext = Extension::load("ui.alerts");
                     <div class="awz-seo-row__desc"><?=Loc::getMessage('AWZ_SEO_OPT_REDIRECT_CODE_DESC')?></div>
                 </div>
             </div>
+
+            <div class="awz-seo-row">
+                <div class="awz-seo-row__label"><?=Loc::getMessage('AWZ_SEO_OPT_WWW_REDIRECT')?></div>
+                <div class="awz-seo-row__ctrl">
+                    <select class="awz-seo-select" name="REDIRECT[WWW]"<?=$disabledAttr?>>
+                        <option value="N"<?=($valWww==='N')?' selected="selected"':''?>><?=Loc::getMessage('AWZ_SEO_OPT_WWW_N')?></option>
+                        <option value="W"<?=($valWww==='W')?' selected="selected"':''?>><?=Loc::getMessage('AWZ_SEO_OPT_WWW_W')?></option>
+                        <option value="NW"<?=($valWww==='NW')?' selected="selected"':''?>><?=Loc::getMessage('AWZ_SEO_OPT_WWW_NW')?></option>
+                    </select>
+                    <div class="awz-seo-row__desc"><?=Loc::getMessage('AWZ_SEO_OPT_WWW_REDIRECT_DESC')?></div>
+                </div>
+            </div>
+
+            <div class="awz-seo-row">
+                <div class="awz-seo-row__label"><?=Loc::getMessage('AWZ_SEO_OPT_CUSTOM_CSV_FILE')?></div>
+                <div class="awz-seo-row__ctrl">
+                    <input type="text" name="REDIRECT[CSV_PATH]" id="AWZ_SEO_CSV_FILE_PATH" value="<?=htmlspecialcharsbx($valCsvPath)?>" class="awz-seo-input" style="width:320px;" placeholder="/upload/redirects.csv"<?=$disabledAttr?>>
+                    <?\CAdminFileDialog::ShowScript(array(
+                        "event" => "AWZ_SEO_CSV_FILE_PATH",
+                        "arResultDest" => array("ELEMENT_ID" => "AWZ_SEO_CSV_FILE_PATH"),
+                        "arPath" => array("PATH" => "/upload/"),
+                        "select" => 'F',
+                        "operation" => 'O',
+                        "showUploadTab" => true,
+                        "showAddToMenuTab" => false,
+                        "fileFilter" => 'csv',
+                        "allowAllFiles" => false,
+                        "SaveConfig" => true,
+                    ));?>
+                    <input type="button" value="..." onClick="window.AWZ_SEO_CSV_FILE_PATH()">
+                    <div class="awz-seo-row__desc"><?=Loc::getMessage('AWZ_SEO_OPT_CUSTOM_CSV_DESC')?></div>
+                </div>
+            </div>
+
         </div>
 
         <?
@@ -453,6 +563,16 @@ if($request->get('saved')==='Y'){
     Extension::load("ui.notification");
     ?>
     <script>BX.ready(function(){BX.UI.Notification.Center.notify({options: {text: "<?=AddSlashesJs(Loc::getMessage('AWZ_SEO_OPT_SAVED'))?>", closeOnCorrespondingEvent: true}});});</script>
+    <?
+}
+if($request->get('csv_saved')==='Y'){
+    Extension::load("ui.notification");
+    $csvCount = (int)$request->get('csv_count');
+    $csvMsg = $csvCount > 0
+        ? sprintf(Loc::getMessage('AWZ_SEO_OPT_CSV_SAVED'), $csvCount)
+        : Loc::getMessage('AWZ_SEO_OPT_CSV_SAVED_EMPTY');
+    ?>
+    <script>BX.ready(function(){BX.UI.Notification.Center.notify({options: {text: "<?=AddSlashesJs($csvMsg)?>", closeOnCorrespondingEvent: true}});});</script>
     <?
 }
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/epilog_admin.php");

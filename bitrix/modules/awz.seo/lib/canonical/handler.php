@@ -56,8 +56,10 @@ class Handler
             return;
 
         $override = Option::get(self::MODULE_ID, self::OPT_OVERRIDE, 'N', $siteId) === 'Y';
-        if (!$override && (string)$APPLICATION->GetProperty('canonical', '') !== '')
-            return; //canonical уже установлен компонентом - не мешаем
+        $hasCanonical = (string)$APPLICATION->GetProperty('canonical', '') !== ''
+            || self::hasCanonicalInHeadStrings();
+        if (!$override && $hasCanonical)
+            return; //canonical уже установлен компонентом (SetPageProperty или AddHeadString) - не мешаем
 
         if (Option::get(self::MODULE_ID, self::OPT_SKIP_ERRORS, 'Y', $siteId) === 'Y' && self::isErrorPage())
             return;
@@ -161,6 +163,28 @@ class Handler
         }
 
         return $url;
+    }
+
+    /**
+     * Проверяет, не добавлен ли тег <link rel="canonical"> через AddHeadString/Asset::addString
+     * (в этом случае SetPageProperty('canonical') не установлен, но тег уже будет в <head>).
+     */
+    protected static function hasCanonicalInHeadStrings(): bool
+    {
+        $asset = \Bitrix\Main\Page\Asset::getInstance();
+        $locations = [
+            \Bitrix\Main\Page\AssetLocation::BEFORE_CSS,
+            \Bitrix\Main\Page\AssetLocation::AFTER_CSS,
+            \Bitrix\Main\Page\AssetLocation::AFTER_JS_KERNEL,
+            \Bitrix\Main\Page\AssetLocation::AFTER_JS,
+        ];
+        foreach ($locations as $location) {
+            $strings = (string)$asset->getStrings($location);
+            if ($strings !== '' && preg_match('#<link[^>]*rel=["\']canonical["\'][^>]*>#i', $strings)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -29,6 +29,8 @@ class Checker
             'REDIRECT_HTTPS' => Option::get(RedirectHandler::MODULE_ID, RedirectHandler::OPT_HTTPS, 'N', $siteId),
             'REDIRECT_INDEX_SLASH' => Option::get(RedirectHandler::MODULE_ID, RedirectHandler::OPT_INDEX_SLASH, 'N', $siteId),
             'REDIRECT_CODE' => Option::get(RedirectHandler::MODULE_ID, RedirectHandler::OPT_CODE, '301', $siteId),
+            'REDIRECT_WWW' => Option::get(RedirectHandler::MODULE_ID, RedirectHandler::OPT_WWW, 'N', $siteId),
+            'REDIRECT_CUSTOM_COUNT' => count(RedirectHandler::getCustomRedirects($siteId)),
             'CANONICAL_MODE' => Option::get(CanonicalHandler::MODULE_ID, CanonicalHandler::OPT_MODE, 'N', $siteId),
             'CANONICAL_PAGEN_NONCANONICAL' => Option::get(CanonicalHandler::MODULE_ID, CanonicalHandler::OPT_PAGEN_NONCANONICAL, 'N', $siteId),
             'CANONICAL_STRIP_GET' => Option::get(CanonicalHandler::MODULE_ID, CanonicalHandler::OPT_STRIP_GET, 'N', $siteId),
@@ -56,16 +58,21 @@ class Checker
         $slashEnd = $options['REDIRECT_SLASH_END'] === 'Y';
         $forceHttps = $options['REDIRECT_HTTPS'] === 'Y';
         $indexSlash = $options['REDIRECT_INDEX_SLASH'] === 'Y';
+        $wwwMode = (string)($options['REDIRECT_WWW'] ?? 'N');
         $code = ($options['REDIRECT_CODE'] === '302') ? 302 : 301;
         //если включён https-редирект, базовые тесты дёргаем сразу с https, чтобы он не мешал
         $scheme = $forceHttps ? 'https' : 'http';
 
+        //канонический хост (с учётом www-редиректа) - используем для path-тестов,
+        //чтобы www-редирект не мешал
+        $canonicalHost = RedirectHandler::normalizeHost($host, $wwwMode);
+
         $tests = [];
 
-        //контрольная точка: корень не должен редиректиться (нет цикла редиректов)
+        //контрольная точка: корень (в канонической форме хоста) не должен редиректиться
         $tests[] = [
             'title' => 'control: home page without redirect',
-            'url' => $scheme.'://'.$host.'/',
+            'url' => $scheme.'://'.$canonicalHost.'/',
             'expect_status' => 0,
             'expect_location' => null,
             'expect_canonical' => self::expectCanonical($options, false),
@@ -74,28 +81,52 @@ class Checker
         if ($forceHttps) {
             $tests[] = [
                 'title' => 'http -> https',
-                'url' => 'http://'.$host.'/',
+                'url' => 'http://'.$canonicalHost.'/',
                 'expect_status' => $code,
-                'expect_location' => 'https://'.$host.'/',
+                'expect_location' => 'https://'.$canonicalHost.'/',
                 'expect_canonical' => null,
             ];
+        }
+
+        //www-редирект
+        if ($wwwMode === 'W' || $wwwMode === 'NW') {
+            $baseHost = (string)preg_replace('#^www\.#i', '', $host);
+            if ($wwwMode === 'W') {
+                //www -> non-www
+                $tests[] = [
+                    'title' => 'www -> non-www',
+                    'url' => $scheme.'://www.'.$baseHost.'/',
+                    'expect_status' => $code,
+                    'expect_location' => $scheme.'://'.$baseHost.'/',
+                    'expect_canonical' => null,
+                ];
+            } else {
+                //non-www -> www
+                $tests[] = [
+                    'title' => 'non-www -> www',
+                    'url' => $scheme.'://'.$baseHost.'/',
+                    'expect_status' => $code,
+                    'expect_location' => $scheme.'://www.'.$baseHost.'/',
+                    'expect_canonical' => null,
+                ];
+            }
         }
 
         if ($multiSlash) {
             $tests[] = self::makeRedirectTest(
                 'multiple slashes',
                 '/awz-seo-check//double///slash',
-                $options, $host
+                $options, $canonicalHost
             );
         }
 
         if ($slashEnd) {
-            $tests[] = self::makeRedirectTest('add trailing slash', '/awz-seo-check/no-slash', $options, $host);
-            $tests[] = self::makeRedirectTest('trailing slash before GET', '/awz-seo-check/no-slash-get?x=1&y=2', $options, $host);
+            $tests[] = self::makeRedirectTest('add trailing slash', '/awz-seo-check/no-slash', $options, $canonicalHost);
+            $tests[] = self::makeRedirectTest('trailing slash before GET', '/awz-seo-check/no-slash-get?x=1&y=2', $options, $canonicalHost);
             //файл с расширением трогать нельзя
             $tests[] = [
                 'title' => 'control: file with extension must not get slash',
-                'url' => $scheme.'://'.$host.'/awz-seo-check/file.html',
+                'url' => $scheme.'://'.$canonicalHost.'/awz-seo-check/file.html',
                 'expect_status' => 0,
                 'expect_location' => null,
                 'expect_canonical' => null,
@@ -103,8 +134,8 @@ class Checker
         }
 
         if ($indexSlash) {
-            $tests[] = self::makeRedirectTest('index.php -> slash', '/index.php', $options, $host);
-            $tests[] = self::makeRedirectTest('index.php with GET -> slash', '/index.php?a=b', $options, $host);
+            $tests[] = self::makeRedirectTest('index.php -> slash', '/index.php', $options, $canonicalHost);
+            $tests[] = self::makeRedirectTest('index.php with GET -> slash', '/index.php?a=b', $options, $canonicalHost);
         }
 
         //canonical
@@ -112,7 +143,7 @@ class Checker
         if ($mode === 'A') {
             $tests[] = [
                 'title' => 'canonical: always mode',
-                'url' => $scheme.'://'.$host.'/',
+                'url' => $scheme.'://'.$canonicalHost.'/',
                 'expect_status' => 0,
                 'expect_location' => null,
                 'expect_canonical' => true,
@@ -120,14 +151,14 @@ class Checker
         } elseif ($mode === 'G') {
             $tests[] = [
                 'title' => 'canonical: get mode (with GET params)',
-                'url' => $scheme.'://'.$host.'/?awzcheck=1',
+                'url' => $scheme.'://'.$canonicalHost.'/?awzcheck=1',
                 'expect_status' => 0,
                 'expect_location' => null,
                 'expect_canonical' => true,
             ];
             $tests[] = [
                 'title' => 'canonical: get mode (without GET params)',
-                'url' => $scheme.'://'.$host.'/',
+                'url' => $scheme.'://'.$canonicalHost.'/',
                 'expect_status' => 0,
                 'expect_location' => null,
                 'expect_canonical' => false,
@@ -139,7 +170,7 @@ class Checker
             $p = (string)$p;
             if ($p === '' || !preg_match('#^/#', $p))
                 continue;
-            $tests[] = self::makeRedirectTest('custom: '.$p, $p, $options, $host);
+            $tests[] = self::makeRedirectTest('custom: '.$p, $p, $options, $canonicalHost);
         }
 
         return $tests;
