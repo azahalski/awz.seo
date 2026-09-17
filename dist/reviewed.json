@@ -1,46 +1,16 @@
 {
   "success": true,
-  "module": "awz.seo",
-  "scan_date": "2026-09-17T20:35:00Z",
-  "scannedFiles": 51,
-  "summary": "Security audit of awz.seo module found multiple medium-severity vulnerabilities related to deserialization, file operations, and potential open redirect. Most issues involve unserialize() calls with insufficient protection and file_get_contents() with user-controlled paths.",
+  "requestId": "awz.seo-1789679619",
   "data": {
     "vulnerabilities": [
       {
-        "file": "options.php",
-        "line": "432",
-        "type": "Unsafe Deserialization",
-        "severity": "medium",
-        "description": "The unserialize() function is used to decode configuration data from the Option storage. While it uses ['allowed_classes'=>false], the serialized data originates from module settings which could be manipulated if an attacker has write access to module settings.",
-        "recommendation": "Consider using json_decode() instead of unserialize() for configuration data, or validate the source of serialized data before deserializing.",
-        "fix": "Replace unserialize() with json_decode() and serialize() with json_encode() for storing regex rules in module options.",
-        "reviewed": {
-          "oldSeverity": "medium",
-          "newSeverity": "medium",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
         "file": "lib/canonical/handler.php",
-        "line": "144",
-        "type": "Unsafe Deserialization",
+        "line": "139-166",
+        "type": "RCE",
         "severity": "medium",
-        "description": "The unserialize() function is used to decode regex rules from a serialized string. The data comes from module options which may be influenced by user input through the admin settings page.",
-        "recommendation": "Use json_decode()/json_encode() instead of unserialize()/serialize() for storing regex rules. Add validation for regex patterns before applying them.",
-        "fix": "Replace unserialize() with json_decode() and store rules as JSON format.",
+        "description": "Подтверждена (ограниченно): Regex Injection с ReDoS-эффектом. Сырые PCRE-паттерны из POST-параметров CANONICAL[REGEX][FROM]/[TO] (options.php:155-163) сохраняются без модификации в опцию CANONICAL_REGEX и применяются методом applyRegexRules() через @preg_replace($from, $to, $url) на КАЖДОМ фронтовом запросе (событие OnEpilog). Валидация ограничена проверкой синтаксиса (@preg_match($from,'') !== false), катастрофический бэктрекинг не отсекается: паттерн вида '#^(a+)+$#' или '#(.*a){20,}#' вызывает экспоненциальный бэктрекинг PCRE и подвешивает PHP-процесс на каждом хите — фактический DoS всего сайта. Вектор записи: только пользователь с правом ACTION_SETT_EDIT (isEditSettings) при валидном bitrix_sessid (options.php:122), поэтому RCE через модификатор /e на PHP>=7 недостижим, а эксплуатация требует привилегированного оператора — severity понижена до medium. Дополнительно: serialized-опция читается через unserialize с ['allowed_classes'=>false] (безопасно).",
+        "recommendation": "Ограничить принимаемые паттерны: запретить модификаторы кроме допустимого белого списка (i, u, s, m), валидировать паттерн тестовым прогоном с лимитом времени/бэктрекинга (ini pcre.backtrack_limit), ограничить длину паттерна, логировать применение правил. Рассмотреть замену сырых PCRE-правил на безопасный DSL (точные пути/маски с preg_quote).",
+        "fix": "Before:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//проверка валидности регулярки\nif (@preg_match($from, '') === false)\n    continue;\n$result = @preg_replace($from, $to, $url);\n\nAfter:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//запрет опасных модификаторов (e и др.) - разрешаем только безопасный набор\nif (!preg_match('#^[^a-zA-Z]*[a-zA-Z]*$#', $from) || preg_match('#[eS]#', self::getModifiers($from)))\n    continue;\n//проверка валидности и защита от катастрофического бэктрекинга\n$oldLimit = ini_set('pcre.backtrack_limit', 1000);\n$valid = @preg_match($from, '') !== false;\n$t0 = microtime(true);\n$result = $valid ? @preg_replace($from, $to, $url) : false;\nini_set('pcre.backtrack_limit', $oldLimit);\n//паттерн, превысивший лимит бэктрекинга или время, отбрасывается\nif ($result === false || microtime(true) - $t0 > 0.05)\n    continue;\nif (is_string($result))\n    $url = $result;",
         "reviewed": {
           "oldSeverity": "medium",
           "newSeverity": "medium",
@@ -57,44 +27,17 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "lib/checker/checker.php",
-        "line": "19",
-        "type": "Unsafe Deserialization",
-        "severity": "medium",
-        "description": "The unserialize() function decodes regex rules from module options. Similar to other instances, this processes data that may originate from admin settings.",
-        "recommendation": "Replace unserialize() with json_decode() for safer data handling.",
-        "fix": "Replace unserialize() with json_decode() and update storage format to JSON.",
-        "reviewed": {
-          "oldSeverity": "medium",
-          "newSeverity": "medium",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
+          "updated_at": "2026-09-17T21:19:57+00:00"
         }
       },
       {
         "file": "options.php",
-        "line": "78",
-        "type": "Path Traversal / File Content Retrieval",
+        "line": "153-163",
+        "type": "RCE",
         "severity": "medium",
-        "description": "The file_get_contents() function reads file content using $realPath which is derived from user-provided path input. An attacker could potentially read arbitrary files if they can control the CSV path setting.",
-        "recommendation": "Validate that $realPath is within an expected directory. Use realpath() and check against allowed base paths before reading.",
-        "fix": "Add path validation: ensure realpath($realPath) starts with expected base directory prefix.",
+        "description": "Подтверждена (источник для находки в lib/canonical/handler.php): сохранение сырых пользовательских PCRE-паттернов. POST-обработчик (защищён check_bitrix_sessid + AccessController::isEditSettings, строка 122) принимает массив CANONICAL[REGEX][FROM]/[TO] и сохраняет его serialize() в опцию CANONICAL_REGEX без какой-либо валидации паттернов: не проверяется синтаксис, модификаторы (в т.ч. потенциально опасные на старых PHP), длина и отсутствие катастрофического бэктрекинга. Значение затем исполняется как PCRE-паттерн на каждом публичном запросе сайта (см. связанную запись lib/canonical/handler.php:139-166). CSRF-защита и проверка прав присутствуют, поэтому эксплуатация возможна только привилегированным оператором (или через CSRF-атакующего с его сессией — но sessid это блокирует).",
+        "recommendation": "Валидировать каждый паттерн при сохранении: проверять синтаксис, белый список модификаторов, ограничение длины, тестовый прогон с временным лимитом pcre.backtrack_limit; отклонять опасные паттерны с сообщением об ошибке, а не сохранять их.",
+        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $to = trim((string)($regexTo[$idx] ?? ''));\n    //валидация: синтаксис + защита от катастрофического бэктрекинга\n    $oldLimit = ini_set('pcre.backtrack_limit', 1000);\n    $valid = @preg_match($from, '') !== false;\n    $t0 = microtime(true);\n    if($valid) @preg_replace($from, $to, 'https://example.com/test-page/');\n    ini_set('pcre.backtrack_limit', $oldLimit);\n    if(!$valid || microtime(true) - $t0 > 0.05) continue; //опасный/невалидный паттерн не сохраняем\n    $regexRules[] = ['FROM' => $from, 'TO' => $to];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}",
         "reviewed": {
           "oldSeverity": "medium",
           "newSeverity": "medium",
@@ -111,202 +54,79 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "lib/redirect/handler.php",
-        "line": "212",
-        "type": "Path Traversal / File Content Retrieval",
-        "severity": "medium",
-        "description": "The file_get_contents() function reads file content using $realPath. This path is derived from module configuration which could be manipulated.",
-        "recommendation": "Add path validation to ensure the file being read is within an expected directory structure.",
-        "fix": "Add path validation: ensure realpath($realPath) starts with expected base directory prefix.",
-        "reviewed": {
-          "oldSeverity": "medium",
-          "newSeverity": "medium",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "options.php",
-        "line": "177",
-        "type": "Open Redirect",
-        "severity": "medium",
-        "description": "The LocalRedirect() function is called with a URL constructed from multiple parameters including $request->get('SITE_ID'). While htmlspecialcharsbx and urlencode are used, the redirect target could potentially be manipulated.",
-        "recommendation": "Validate redirect targets against a whitelist of allowed URLs or domains before redirecting.",
-        "fix": "Add validation for SITE_ID parameter and verify the redirect URL only contains expected query parameters.",
-        "reviewed": {
-          "oldSeverity": "low",
-          "newSeverity": "medium",
-          "changed": true,
-          "category": "open-redirect-unclear-source",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "validate-source-and-allowlist",
-          "confidence": "low",
-          "rationale": "Left as medium pending confirmation of whether the redirect target is request-controlled or only editable by trusted administrators."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "lib/canonical/handler.php",
-        "line": "160",
-        "type": "Regex Injection / ReDoS",
-        "severity": "medium",
-        "description": "The preg_replace() function is called with $from variable which comes from user-configurable regex rules stored in module options. Malicious regex patterns could cause ReDoS (Regular Expression Denial of Service) or unexpected behavior.",
-        "recommendation": "Validate regex patterns before use. Implement pattern complexity limits and test for catastrophic backtracking.",
-        "fix": "Add regex pattern validation using preg_match('/^#.*#{1,3}#[iuDSUXuA]*$/') and limit pattern length.",
-        "reviewed": {
-          "oldSeverity": "medium",
-          "newSeverity": "medium",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "lib/canonical/handler.php",
-        "line": "222",
-        "type": "SSRF",
-        "severity": "medium",
-        "description": "The \\CHTTP::GetLastStatus() call indicates HTTP requests are being made. If the target URL can be controlled by user input, this could lead to Server-Side Request Forgery attacks.",
-        "recommendation": "Validate and whitelist allowed hostnames/IPs before making HTTP requests. Block internal network addresses.",
-        "fix": "Implement URL validation: resolve hostname and verify it is not an internal IP address before making request.",
-        "reviewed": {
-          "oldSeverity": "medium",
-          "newSeverity": "medium",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "install/index.php",
-        "line": "86",
-        "type": "SQL Query via Connection",
-        "severity": "low",
-        "description": "The getConnection() is used followed by RunSQLBatch which executes SQL from files. While this is during installation, ensure SQL files don't contain dynamic query construction.",
-        "recommendation": "Ensure all SQL queries use parameterized statements. Review SQL batch files for any dynamic query building.",
-        "fix": "Review SQL batch files and ensure no user input is concatenated into SQL queries.",
-        "reviewed": {
-          "oldSeverity": "low",
-          "newSeverity": "low",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
-        }
-      },
-      {
-        "file": "options.php",
-        "line": "2",
-        "type": "Direct Superglobal Access",
-        "severity": "low",
-        "description": "Direct usage of $_SERVER superglobal. While used for DOCUMENT_ROOT which is generally safe, be aware of direct superglobal access patterns.",
-        "recommendation": "Consider using Bitrix API methods like $APPLICATION->GetCurPage() or CFile::GetSystemVersion() for path resolution.",
-        "fix": "Use Bitrix framework methods for path resolution instead of direct $_SERVER access.",
-        "reviewed": {
-          "oldSeverity": "low",
-          "newSeverity": "low",
-          "changed": false,
-          "category": "kept-as-reported",
-          "versionScope": "current",
-          "version": "current",
-          "currentVersionRelevance": "present-in-current-scan",
-          "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T20:39:11+00:00"
+          "updated_at": "2026-09-17T21:19:57+00:00"
         }
       }
     ],
+    "summary": "Обнаружено 2 уязвимости в 2 файлах при анализе 51 целевого файла модуля (прочитано целиком 30 файлов, включая все entry points: options.php, AJAX-контроллер прав, обработчики OnPageStart/OnEpilog, подсистему доступа). Максимальная severity: medium. Отклонённые сигналы recon: exec() в usermodel.php — это Query->exec() построителя запросов (не OS-команда); unserialize в 3 местах — везде с ['allowed_classes'=>false]; SQL в handlers.php — с (int)-приведениями; file_get_contents в options.php и redirect/handler.php — с realpath-проверкой в пределах DOCUMENT_ROOT; include/require — только фиксированные пути ядра; LocalRedirect — на фиксированный URL настроек (по рубрике не баг); HTTP_HOST в redirect/canonical — санитизирован preg_replace('#[^a-zA-Z0-9\\.\\-\\:]#'). AJAX-контроллер seo.config.permissions защищён Authentication+Csrf+HttpMethod(POST)+проверкой AccessController. Функциональный баг (не уязвимость): install/unstep.php:13 — переменная $moduleId внутри одинарных кавычек не интерполируется, lang-файл не подключается.",
+    "scannedFiles": 51,
     "riskLevel": "medium",
+    "auditedFiles": [
+      ".settings.php",
+      "include.php",
+      "options.php",
+      "admin/menu.php",
+      "install/index.php",
+      "install/solution.php",
+      "install/unstep.php",
+      "install/version.php",
+      "install/components/seo.config.permissions/ajax.php",
+      "lib/access/accesscontroller.php",
+      "lib/access/handlers.php",
+      "lib/access/component/configpermissions.php",
+      "lib/access/custom/actiondictionary.php",
+      "lib/access/custom/componentconfig.php",
+      "lib/access/custom/helper.php",
+      "lib/access/custom/permissiondictionary.php",
+      "lib/access/custom/roledictionary.php",
+      "lib/access/custom/rules/example.php",
+      "lib/access/entity/user.php",
+      "lib/access/entityselectors/group.php",
+      "lib/access/entityselectors/user.php",
+      "lib/access/include/moduleright.php",
+      "lib/access/model/basemodel.php",
+      "lib/access/model/usermodel.php",
+      "lib/access/permission/actiondictionary.php",
+      "lib/access/permission/permissiondictionary.php",
+      "lib/access/permission/roledictionary.php",
+      "lib/access/permission/rulefactory.php",
+      "lib/access/permission/rules/rightedit.php",
+      "lib/access/permission/rules/rightview.php",
+      "lib/access/permission/rules/settedit.php",
+      "lib/access/permission/rules/settview.php",
+      "lib/access/permission/roleutil.php",
+      "lib/access/tables/permission.php",
+      "lib/access/tables/role.php",
+      "lib/access/tables/rolerelation.php",
+      "lib/canonical/handler.php",
+      "lib/checker/checker.php",
+      "lib/meta/handler.php",
+      "lib/redirect/handler.php"
+    ],
     "reviewSummary": {
-      "reviewedAt": "2026-09-17",
+      "reviewedAt": "2026-09-18",
       "method": "BUS-aware triage: preserve original finding fields except severity, add reviewed node with old severity and rationale.",
       "totals": {
-        "vulnerabilities": 10,
-        "changedSeverity": 1,
-        "unchangedSeverity": 9
+        "vulnerabilities": 2,
+        "changedSeverity": 0,
+        "unchangedSeverity": 2
       },
       "rawSeverityCounts": {
-        "medium": 7,
-        "low": 3
+        "medium": 2
       },
       "reviewedSeverityCounts": {
-        "medium": 8,
-        "low": 2
+        "medium": 2
       },
       "currentScope": {
-        "total": 10,
+        "total": 2,
         "rawSeverityCounts": {
-          "medium": 7,
-          "low": 3
+          "medium": 2
         },
         "reviewedSeverityCounts": {
-          "medium": 8,
-          "low": 2
+          "medium": 2
         },
         "reviewedCategories": {
-          "kept-as-reported": 9,
-          "open-redirect-unclear-source": 1
+          "kept-as-reported": 2
         }
       },
       "historicalUpdatePackages": {
@@ -321,8 +141,8 @@
       ]
     },
     "feedbackSummary": {
-      "updatedAt": "2026-09-17T20:39:11+00:00",
-      "applied": 10
+      "updatedAt": "2026-09-17T21:19:57+00:00",
+      "applied": 2
     }
   }
 }

@@ -5,15 +5,15 @@
   },
   "current_state": {
     "status": "needs_review",
-    "last_run_id": "awz.seo-2",
+    "last_run_id": "awz.seo-1789679619",
     "archive_sha256": null,
     "open_findings": 0,
     "blocking_findings_open": 0,
     "false_positive_findings": 0,
-    "accepted_risk_findings": 10,
-    "fixed_findings": 4,
+    "accepted_risk_findings": 2,
+    "fixed_findings": 14,
     "removed_findings": 0,
-    "total_findings": 14
+    "total_findings": 16
   },
   "runs": [
     {
@@ -50,6 +50,23 @@
         "still_open_findings": 0,
         "reopened_findings": 0,
         "resolved_since_previous_run": 4
+      }
+    },
+    {
+      "run_id": "awz.seo-1789679619",
+      "created_at": "2026-09-17T21:15:28+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz.seo-1789679619",
+      "input_summary": "Обнаружено 2 уязвимости в 2 файлах при анализе 51 целевого файла модуля (прочитано целиком 30 файлов, включая все entry points: options.php, AJAX-контроллер прав, обработчики OnPageStart/OnEpilog, подсистему доступа). Максимальная severity: medium. Отклонённые сигналы recon: exec() в usermodel.php — это Query->exec() построителя запросов (не OS-команда); unserialize в 3 местах — везде с ['allowed_classes'=>false]; SQL в handlers.php — с (int)-приведениями; file_get_contents в options.php и redirect/handler.php — с realpath-проверкой в пределах DOCUMENT_ROOT; include/require — только фиксированные пути ядра; LocalRedirect — на фиксированный URL настроек (по рубрике не баг); HTTP_HOST в redirect/canonical — санитизирован preg_replace('#[^a-zA-Z0-9\\.\\-\\:]#'). AJAX-контроллер seo.config.permissions защищён Authentication+Csrf+HttpMethod(POST)+проверкой AccessController. Функциональный баг (не уязвимость): install/unstep.php:13 — переменная $moduleId внутри одинарных кавычек не интерполируется, lang-файл не подключается.",
+      "summary": {
+        "current_scan_findings": 2,
+        "severity_counts": {
+          "medium": 2
+        },
+        "new_findings": 2,
+        "still_open_findings": 0,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 10
       }
     }
   ],
@@ -383,18 +400,15 @@
       "fingerprint": "1e4b0258ca8d27f8a6f479710600e0e4",
       "type": "Unsafe Deserialization",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "options.php",
         "line": "432"
       },
-      "current_location": {
-        "file": "options.php",
-        "line": "432"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "options.php",
         "line": "432",
@@ -440,26 +454,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00006",
       "fingerprint": "4ad991f50ab56c86a0969cec5d344d7f",
       "type": "Unsafe Deserialization",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "lib/canonical/handler.php",
         "line": "144"
       },
-      "current_location": {
-        "file": "lib/canonical/handler.php",
-        "line": "144"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "lib/canonical/handler.php",
         "line": "144",
@@ -505,26 +527,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00007",
       "fingerprint": "20a2bba4e818477d17e5c89d07d513b6",
       "type": "Unsafe Deserialization",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "lib/checker/checker.php",
         "line": "19"
       },
-      "current_location": {
-        "file": "lib/checker/checker.php",
-        "line": "19"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "lib/checker/checker.php",
         "line": "19",
@@ -570,26 +600,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00008",
       "fingerprint": "1bf6c25a0f718d231f692809186312d1",
       "type": "Path Traversal / File Content Retrieval",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "options.php",
         "line": "78"
       },
-      "current_location": {
-        "file": "options.php",
-        "line": "78"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "options.php",
         "line": "78",
@@ -635,26 +673,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00009",
       "fingerprint": "31c25bc36f716c9a41de660f29bc33b1",
       "type": "Path Traversal / File Content Retrieval",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "lib/redirect/handler.php",
         "line": "212"
       },
-      "current_location": {
-        "file": "lib/redirect/handler.php",
-        "line": "212"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "lib/redirect/handler.php",
         "line": "212",
@@ -700,26 +746,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00010",
       "fingerprint": "d0296769ef7e7231cf95c171f2a87e34",
       "type": "Open Redirect",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "options.php",
         "line": "177"
       },
-      "current_location": {
-        "file": "options.php",
-        "line": "177"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "options.php",
         "line": "177",
@@ -765,26 +819,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00011",
       "fingerprint": "d57239f549cdba95f0899179815a67a0",
       "type": "Regex Injection / ReDoS",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "lib/canonical/handler.php",
         "line": "160"
       },
-      "current_location": {
-        "file": "lib/canonical/handler.php",
-        "line": "160"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "lib/canonical/handler.php",
         "line": "160",
@@ -830,26 +892,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00012",
       "fingerprint": "5895a77abe47fcc555c94bffef6593e3",
       "type": "SSRF",
       "severity": "medium",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "lib/canonical/handler.php",
         "line": "222"
       },
-      "current_location": {
-        "file": "lib/canonical/handler.php",
-        "line": "222"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "lib/canonical/handler.php",
         "line": "222",
@@ -895,26 +965,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00013",
       "fingerprint": "15bcc4bf6881618b463d7b1f212e8936",
       "type": "SQL Query via Connection",
       "severity": "low",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "install/index.php",
         "line": "86"
       },
-      "current_location": {
-        "file": "install/index.php",
-        "line": "86"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "install/index.php",
         "line": "86",
@@ -960,26 +1038,34 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
         }
-      ]
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
     },
     {
       "journal_finding_id": "JF-00014",
       "fingerprint": "affd273bca1da237f4c41e797a3b02c3",
       "type": "Direct Superglobal Access",
       "severity": "low",
-      "status": "accepted_risk",
+      "status": "fixed",
       "first_seen_run_id": "awz.seo-2",
       "last_seen_run_id": "awz.seo-2",
-      "resolved_run_id": null,
+      "resolved_run_id": "awz.seo-1789679619",
       "original_location": {
         "file": "options.php",
         "line": "2"
       },
-      "current_location": {
-        "file": "options.php",
-        "line": "2"
-      },
+      "current_location": null,
       "latest_vulnerability": {
         "file": "options.php",
         "line": "2",
@@ -1022,6 +1108,147 @@
           "run_id": "awz.seo-2",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T20:39:11+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "resolved",
+          "at": "2026-09-17T21:15:28+00:00",
+          "status": "fixed"
+        }
+      ],
+      "resolution": {
+        "type": "not_reproduced_after_rescan",
+        "resolved_in_run": "awz.seo-1789679619",
+        "reason": "The reviewed scan no longer reports a matching finding for the current archive."
+      }
+    },
+    {
+      "journal_finding_id": "JF-00015",
+      "fingerprint": "fd615f1ab4700441e6a5b343bf86815e",
+      "type": "RCE",
+      "severity": "medium",
+      "status": "accepted_risk",
+      "first_seen_run_id": "awz.seo-1789679619",
+      "last_seen_run_id": "awz.seo-1789679619",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "lib/canonical/handler.php",
+        "line": "139-166"
+      },
+      "current_location": {
+        "file": "lib/canonical/handler.php",
+        "line": "139-166"
+      },
+      "latest_vulnerability": {
+        "file": "lib/canonical/handler.php",
+        "line": "139-166",
+        "type": "RCE",
+        "severity": "medium",
+        "description": "Подтверждена (ограниченно): Regex Injection с ReDoS-эффектом. Сырые PCRE-паттерны из POST-параметров CANONICAL[REGEX][FROM]/[TO] (options.php:155-163) сохраняются без модификации в опцию CANONICAL_REGEX и применяются методом applyRegexRules() через @preg_replace($from, $to, $url) на КАЖДОМ фронтовом запросе (событие OnEpilog). Валидация ограничена проверкой синтаксиса (@preg_match($from,'') !== false), катастрофический бэктрекинг не отсекается: паттерн вида '#^(a+)+$#' или '#(.*a){20,}#' вызывает экспоненциальный бэктрекинг PCRE и подвешивает PHP-процесс на каждом хите — фактический DoS всего сайта. Вектор записи: только пользователь с правом ACTION_SETT_EDIT (isEditSettings) при валидном bitrix_sessid (options.php:122), поэтому RCE через модификатор /e на PHP>=7 недостижим, а эксплуатация требует привилегированного оператора — severity понижена до medium. Дополнительно: serialized-опция читается через unserialize с ['allowed_classes'=>false] (безопасно).",
+        "recommendation": "Ограничить принимаемые паттерны: запретить модификаторы кроме допустимого белого списка (i, u, s, m), валидировать паттерн тестовым прогоном с лимитом времени/бэктрекинга (ini pcre.backtrack_limit), ограничить длину паттерна, логировать применение правил. Рассмотреть замену сырых PCRE-правил на безопасный DSL (точные пути/маски с preg_quote).",
+        "fix": "Before:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//проверка валидности регулярки\nif (@preg_match($from, '') === false)\n    continue;\n$result = @preg_replace($from, $to, $url);\n\nAfter:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//запрет опасных модификаторов (e и др.) - разрешаем только безопасный набор\nif (!preg_match('#^[^a-zA-Z]*[a-zA-Z]*$#', $from) || preg_match('#[eS]#', self::getModifiers($from)))\n    continue;\n//проверка валидности и защита от катастрофического бэктрекинга\n$oldLimit = ini_set('pcre.backtrack_limit', 1000);\n$valid = @preg_match($from, '') !== false;\n$t0 = microtime(true);\n$result = $valid ? @preg_replace($from, $to, $url) : false;\nini_set('pcre.backtrack_limit', $oldLimit);\n//паттерн, превысивший лимит бэктрекинга или время, отбрасывается\nif ($result === false || microtime(true) - $t0 > 0.05)\n    continue;\nif (is_string($result))\n    $url = $result;",
+        "reviewed": {
+          "oldSeverity": "medium",
+          "newSeverity": "medium",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T21:19:57+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "detected",
+          "at": "2026-09-17T21:15:28+00:00",
+          "location": {
+            "file": "lib/canonical/handler.php",
+            "line": "139-166"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T21:19:57+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        }
+      ]
+    },
+    {
+      "journal_finding_id": "JF-00016",
+      "fingerprint": "a4b841a0e3d85d9db5edfc4338a4012b",
+      "type": "RCE",
+      "severity": "medium",
+      "status": "accepted_risk",
+      "first_seen_run_id": "awz.seo-1789679619",
+      "last_seen_run_id": "awz.seo-1789679619",
+      "resolved_run_id": null,
+      "original_location": {
+        "file": "options.php",
+        "line": "153-163"
+      },
+      "current_location": {
+        "file": "options.php",
+        "line": "153-163"
+      },
+      "latest_vulnerability": {
+        "file": "options.php",
+        "line": "153-163",
+        "type": "RCE",
+        "severity": "medium",
+        "description": "Подтверждена (источник для находки в lib/canonical/handler.php): сохранение сырых пользовательских PCRE-паттернов. POST-обработчик (защищён check_bitrix_sessid + AccessController::isEditSettings, строка 122) принимает массив CANONICAL[REGEX][FROM]/[TO] и сохраняет его serialize() в опцию CANONICAL_REGEX без какой-либо валидации паттернов: не проверяется синтаксис, модификаторы (в т.ч. потенциально опасные на старых PHP), длина и отсутствие катастрофического бэктрекинга. Значение затем исполняется как PCRE-паттерн на каждом публичном запросе сайта (см. связанную запись lib/canonical/handler.php:139-166). CSRF-защита и проверка прав присутствуют, поэтому эксплуатация возможна только привилегированным оператором (или через CSRF-атакующего с его сессией — но sessid это блокирует).",
+        "recommendation": "Валидировать каждый паттерн при сохранении: проверять синтаксис, белый список модификаторов, ограничение длины, тестовый прогон с временным лимитом pcre.backtrack_limit; отклонять опасные паттерны с сообщением об ошибке, а не сохранять их.",
+        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $to = trim((string)($regexTo[$idx] ?? ''));\n    //валидация: синтаксис + защита от катастрофического бэктрекинга\n    $oldLimit = ini_set('pcre.backtrack_limit', 1000);\n    $valid = @preg_match($from, '') !== false;\n    $t0 = microtime(true);\n    if($valid) @preg_replace($from, $to, 'https://example.com/test-page/');\n    ini_set('pcre.backtrack_limit', $oldLimit);\n    if(!$valid || microtime(true) - $t0 > 0.05) continue; //опасный/невалидный паттерн не сохраняем\n    $regexRules[] = ['FROM' => $from, 'TO' => $to];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}",
+        "reviewed": {
+          "oldSeverity": "medium",
+          "newSeverity": "medium",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-09-17T21:19:57+00:00"
+        }
+      },
+      "events": [
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "detected",
+          "at": "2026-09-17T21:15:28+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "153-163"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T21:19:57+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
