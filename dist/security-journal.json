@@ -77,7 +77,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T17:18:24+00:00"
+          "updated_at": "2026-09-17T19:34:53+00:00"
         }
       },
       "events": [
@@ -95,6 +95,14 @@
           "run_id": "awz.seo-1789665082",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T17:18:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789665082",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T19:34:53+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -142,7 +150,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T17:18:24+00:00"
+          "updated_at": "2026-09-17T19:34:53+00:00"
         }
       },
       "events": [
@@ -160,6 +168,14 @@
           "run_id": "awz.seo-1789665082",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T17:18:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789665082",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T19:34:53+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -207,7 +223,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T17:18:24+00:00"
+          "updated_at": "2026-09-17T19:34:53+00:00"
         }
       },
       "events": [
@@ -225,6 +241,14 @@
           "run_id": "awz.seo-1789665082",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T17:18:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789665082",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T19:34:53+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -272,7 +296,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T17:18:24+00:00"
+          "updated_at": "2026-09-17T19:34:53+00:00"
         }
       },
       "events": [
@@ -290,6 +314,14 @@
           "run_id": "awz.seo-1789665082",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T17:18:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789665082",
+          "event": "partner_disposition_updated",
+          "at": "2026-09-17T19:34:53+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
