@@ -30,6 +30,8 @@ class Handler
      * 'NW' - без www -> www (добавить префикс www)
      */
     public const OPT_WWW = 'REDIRECT_WWW';
+    /** редирект первой страницы пагинации: /path/?PAGEN_1=1 -> /path/ (без GET-параметра) */
+    public const OPT_PAGEN_FIRST = 'REDIRECT_PAGEN_FIRST';
     /** путь к CSV-файлу с кастомными редиректами (относительно DOCUMENT_ROOT, например /upload/redirects.csv) */
     public const OPT_CUSTOM = 'REDIRECT_CUSTOM_PATH';
     /** максимальная длина цепочки редиректов (защита от зацикливания) */
@@ -64,9 +66,10 @@ class Handler
         $forceHttps = Option::get(self::MODULE_ID, self::OPT_HTTPS, 'N', $siteId) === 'Y';
         $indexSlash = Option::get(self::MODULE_ID, self::OPT_INDEX_SLASH, 'N', $siteId) === 'Y';
         $wwwMode = Option::get(self::MODULE_ID, self::OPT_WWW, 'N', $siteId);
+        $pagenFirst = Option::get(self::MODULE_ID, self::OPT_PAGEN_FIRST, 'N', $siteId) === 'Y';
         $customRedirects = self::getCustomRedirects($siteId);
 
-        if (!$multiSlash && !$slashEnd && !$forceHttps && !$indexSlash && $wwwMode === 'N' && empty($customRedirects))
+        if (!$multiSlash && !$slashEnd && !$forceHttps && !$indexSlash && $wwwMode === 'N' && !$pagenFirst && empty($customRedirects))
             return;
 
         //защита от зацикливания: если цепочка уже достигла лимита - не редиректим
@@ -108,10 +111,17 @@ class Handler
             }
         }
 
-        //2) остальные редиректы: нормализация пути, www, https
+        //2) остальные редиректы: нормализация пути, www, https, первая страница пагинации
+        //редирект первой страницы пагинации: PAGEN_N=1 убирается из query,
+        //если после этого других GET-параметров нет - редирект на чистый путь без "?"
+        $outQuery = $query;
+        if ($pagenFirst && $query !== null) {
+            $outQuery = self::stripPagenFirst($query);
+        }
+
         $newPath = self::normalizePath($path, $multiSlash, $indexSlash, $slashEnd);
         $newScheme = ($https || $forceHttps) ? 'https' : 'http';
-        $newUri = $newPath.($query !== null ? '?'.$query : '');
+        $newUri = $newPath.($outQuery !== null ? '?'.$outQuery : '');
         $curUri = $path.($query !== null ? '?'.$query : '');
 
         //www-редирект: нормализуем хост (только одно направление активно - нет цикла)
@@ -152,6 +162,43 @@ class Handler
         }
 
         return ($path === '') ? '/' : $path;
+    }
+
+    /**
+     * Убирает из GET-строки параметры первой страницы пагинации (PAGEN_N=1).
+     * Остальные GET-параметры сохраняются.
+     * @param string $query GET-строка без "?"
+     * @return string|null|null если строка опустела (все параметры убраны), иначе новая GET-строка
+     */
+    public static function stripPagenFirst(string $query): ?string
+    {
+        if ($query === '' || stripos($query, 'PAGEN_') === false)
+            return $query === '' ? null : $query;
+
+        $params = explode('&', $query);
+        $kept = [];
+        $changed = false;
+        foreach ($params as $param) {
+            $name = $param;
+            $value = null;
+            $eq = strpos($param, '=');
+            if ($eq !== false) {
+                $name = substr($param, 0, $eq);
+                $value = substr($param, $eq + 1);
+            }
+            if (preg_match('#^PAGEN_\d+$#i', $name) === 1
+                && $value !== null
+                && (int)$value === 1
+            ) {
+                $changed = true;
+                continue;
+            }
+            $kept[] = $param;
+        }
+        if (!$changed)
+            return $query;
+        $newQuery = implode('&', $kept);
+        return ($newQuery === '') ? null : $newQuery;
     }
 
     /**

@@ -15,6 +15,8 @@ $MESS['AWZ_SEO_OPT_HTTPS_REDIRECT'] = "Редирект с http на https";
 $MESS['AWZ_SEO_OPT_HTTPS_REDIRECT_DESC'] = "Все http-запросы перенаправляются на https с сохранением пути и GET-параметров";
 $MESS['AWZ_SEO_OPT_INDEX_SLASH'] = "Редирект с index.php на слеш";
 $MESS['AWZ_SEO_OPT_INDEX_SLASH_DESC'] = "Например: /index.php -> /, /path/index.php -> /path/. GET-параметры сохраняются: /index.php?a=b -> /?a=b";
+$MESS['AWZ_SEO_OPT_PAGEN_FIRST'] = "Редирект первой страницы пагинации";
+$MESS['AWZ_SEO_OPT_PAGEN_FIRST_DESC'] = "Если в GET-параметрах есть PAGEN_N=1 (первая страница пагинации), выполняется редирект на страницу раздела без GET-параметра: /catalog/?PAGEN_1=1 -> /catalog/. Остальные GET-параметры сохраняются: /catalog/?PAGEN_1=1&q=1 -> /catalog/?q=1";
 $MESS['AWZ_SEO_OPT_REDIRECT_CODE'] = "Код ответа редиректа";
 $MESS['AWZ_SEO_OPT_REDIRECT_CODE_DESC'] = "301 - постоянный редирект (кэшируется браузером и поисковыми системами), 302 - временный";
 $MESS['AWZ_SEO_OPT_REDIRECT_CODE_PERM'] = "постоянный";

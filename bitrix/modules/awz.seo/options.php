@@ -108,6 +108,7 @@ $redirectOptions = [
     RedirectHandler::OPT_SLASH_END,
     RedirectHandler::OPT_HTTPS,
     RedirectHandler::OPT_INDEX_SLASH,
+    RedirectHandler::OPT_PAGEN_FIRST,
 ];
 //опции canonical (per-site)
 $canonicalCheckboxOptions = [
@@ -295,6 +296,7 @@ $ext = Extension::load("ui.alerts");
         $val2 = Option::get($module_id, RedirectHandler::OPT_SLASH_END, "N", $currentSite);
         $val3 = Option::get($module_id, RedirectHandler::OPT_HTTPS, "N", $currentSite);
         $val4 = Option::get($module_id, RedirectHandler::OPT_INDEX_SLASH, "N", $currentSite);
+        $val5 = Option::get($module_id, RedirectHandler::OPT_PAGEN_FIRST, "N", $currentSite);
         $valCode = Option::get($module_id, RedirectHandler::OPT_CODE, "301", $currentSite);
         $valWww = Option::get($module_id, RedirectHandler::OPT_WWW, "N", $currentSite);
         $valCsvPath = Option::get($module_id, RedirectHandler::OPT_CUSTOM, "", $currentSite);
@@ -312,6 +314,7 @@ $ext = Extension::load("ui.alerts");
                 [RedirectHandler::OPT_SLASH_END, 'AWZ_SEO_OPT_SLASH_END', 'AWZ_SEO_OPT_SLASH_END_DESC', $val2],
                 [RedirectHandler::OPT_HTTPS, 'AWZ_SEO_OPT_HTTPS_REDIRECT', 'AWZ_SEO_OPT_HTTPS_REDIRECT_DESC', $val3],
                 [RedirectHandler::OPT_INDEX_SLASH, 'AWZ_SEO_OPT_INDEX_SLASH', 'AWZ_SEO_OPT_INDEX_SLASH_DESC', $val4],
+                [RedirectHandler::OPT_PAGEN_FIRST, 'AWZ_SEO_OPT_PAGEN_FIRST', 'AWZ_SEO_OPT_PAGEN_FIRST_DESC', $val5],
             ];
             foreach($redirectRows as $row){
                 ?>
