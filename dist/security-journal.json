@@ -68,6 +68,23 @@
         "reopened_findings": 0,
         "resolved_since_previous_run": 10
       }
+    },
+    {
+      "run_id": "awz.seo-1789679619",
+      "created_at": "2026-10-11T16:48:17+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz.seo-1789679619",
+      "input_summary": "Обнаружено 2 уязвимости в 2 файлах при анализе 51 целевого файла модуля (прочитано целиком 30 файлов, включая все entry points: options.php, AJAX-контроллер прав, обработчики OnPageStart/OnEpilog, подсистему доступа). Максимальная severity: medium. Отклонённые сигналы recon: exec() в usermodel.php — это Query->exec() построителя запросов (не OS-команда); unserialize в 3 местах — везде с ['allowed_classes'=>false]; SQL в handlers.php — с (int)-приведениями; file_get_contents в options.php и redirect/handler.php — с realpath-проверкой в пределах DOCUMENT_ROOT; include/require — только фиксированные пути ядра; LocalRedirect — на фиксированный URL настроек (по рубрике не баг); HTTP_HOST в redirect/canonical — санитизирован preg_replace('#[^a-zA-Z0-9\\.\\-\\:]#'). AJAX-контроллер seo.config.permissions защищён Authentication+Csrf+HttpMethod(POST)+проверкой AccessController. Функциональный баг (не уязвимость): install/unstep.php:13 — переменная $moduleId внутри одинарных кавычек не интерполируется, lang-файл не подключается.",
+      "summary": {
+        "current_scan_findings": 2,
+        "severity_counts": {
+          "medium": 2
+        },
+        "new_findings": 0,
+        "still_open_findings": 2,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 0
+      }
     }
   ],
   "findings": [
@@ -1166,7 +1183,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T21:19:57+00:00"
+          "updated_at": "2026-10-11T16:48:49+00:00"
         }
       },
       "events": [
@@ -1184,6 +1201,24 @@
           "run_id": "awz.seo-1789679619",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T21:19:57+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "detected_again",
+          "at": "2026-10-11T16:48:17+00:00",
+          "location": {
+            "file": "lib/canonical/handler.php",
+            "line": "139-166"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "partner_disposition_updated",
+          "at": "2026-10-11T16:48:49+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -1231,7 +1266,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-09-17T21:19:57+00:00"
+          "updated_at": "2026-10-11T16:48:49+00:00"
         }
       },
       "events": [
@@ -1249,6 +1284,24 @@
           "run_id": "awz.seo-1789679619",
           "event": "partner_disposition_updated",
           "at": "2026-09-17T21:19:57+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "detected_again",
+          "at": "2026-10-11T16:48:17+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "153-163"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1789679619",
+          "event": "partner_disposition_updated",
+          "at": "2026-10-11T16:48:49+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
