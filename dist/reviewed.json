@@ -1,46 +1,61 @@
 {
   "success": true,
-  "requestId": "awz.seo-1789679619",
+  "requestId": "awz-seo-scan-1794139899",
   "data": {
     "vulnerabilities": [
       {
-        "file": "lib/canonical/handler.php",
-        "line": "139-166",
-        "type": "RCE",
+        "file": "options.php",
+        "line": "183,273",
+        "type": "Cross-Site Scripting",
         "severity": "medium",
-        "description": "Подтверждена (ограниченно): Regex Injection с ReDoS-эффектом. Сырые PCRE-паттерны из POST-параметров CANONICAL[REGEX][FROM]/[TO] (options.php:155-163) сохраняются без модификации в опцию CANONICAL_REGEX и применяются методом applyRegexRules() через @preg_replace($from, $to, $url) на КАЖДОМ фронтовом запросе (событие OnEpilog). Валидация ограничена проверкой синтаксиса (@preg_match($from,'') !== false), катастрофический бэктрекинг не отсекается: паттерн вида '#^(a+)+$#' или '#(.*a){20,}#' вызывает экспоненциальный бэктрекинг PCRE и подвешивает PHP-процесс на каждом хите — фактический DoS всего сайта. Вектор записи: только пользователь с правом ACTION_SETT_EDIT (isEditSettings) при валидном bitrix_sessid (options.php:122), поэтому RCE через модификатор /e на PHP>=7 недостижим, а эксплуатация требует привилегированного оператора — severity понижена до medium. Дополнительно: serialized-опция читается через unserialize с ['allowed_classes'=>false] (безопасно).",
-        "recommendation": "Ограничить принимаемые паттерны: запретить модификаторы кроме допустимого белого списка (i, u, s, m), валидировать паттерн тестовым прогоном с лимитом времени/бэктрекинга (ini pcre.backtrack_limit), ограничить длину паттерна, логировать применение правил. Рассмотреть замену сырых PCRE-правил на безопасный DSL (точные пути/маски с preg_quote).",
-        "fix": "Before:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//проверка валидности регулярки\nif (@preg_match($from, '') === false)\n    continue;\n$result = @preg_replace($from, $to, $url);\n\nAfter:\nif ($from === '' || $i >= self::REGEX_MAX_RULES)\n    continue;\n$i++;\n//запрет опасных модификаторов (e и др.) - разрешаем только безопасный набор\nif (!preg_match('#^[^a-zA-Z]*[a-zA-Z]*$#', $from) || preg_match('#[eS]#', self::getModifiers($from)))\n    continue;\n//проверка валидности и защита от катастрофического бэктрекинга\n$oldLimit = ini_set('pcre.backtrack_limit', 1000);\n$valid = @preg_match($from, '') !== false;\n$t0 = microtime(true);\n$result = $valid ? @preg_replace($from, $to, $url) : false;\nini_set('pcre.backtrack_limit', $oldLimit);\n//паттерн, превысивший лимит бэктрекинга или время, отбрасывается\nif ($result === false || microtime(true) - $t0 > 0.05)\n    continue;\nif (is_string($result))\n    $url = $result;",
+        "description": "Подтверждена reflected XSS в админ-странице настроек модуля. Значение GET-параметра SITE_ID читается в строке 183 ($currentSite = (string)($request->get('SITE_ID') ...)) и выводится без экранирования в строке 273: <input type=\"hidden\" name=\"SITE_ID\" value=\"<?=$currentSite?>\"/>. Атакующий может составить ссылку /bitrix/admin/settings.php?mid=awz.seo&SITE_ID=\"><script>... и заманить авторизованного администратора (с правом ACTION_SETT_VIEW): payload исполнится в контексте admin-сессии. Остальные выводы $currentSite на странице либо не выполняются, либо экранированы (LocalRedirect в строке 179 использует urlencode, input в строке 360 — htmlspecialcharsbx), поэтому точка входа именно одна — строка 273.",
+        "recommendation": "Экранировать все выводы значений из запроса через htmlspecialcharsbx (для HTML-атрибута это корректный контекст). Дополнительно валидировать SITE_ID по списку сайтов из SiteTable перед использованием.",
+        "fix": "Before:\n$currentSite = (string)($request->get('SITE_ID') ?: (isset($siteRes[0]['LID']) ? $siteRes[0]['LID'] : ''));\n...\n<input type=\"hidden\" name=\"SITE_ID\" value=\"<?=$currentSite?>\"/>\n\nAfter:\n$currentSite = (string)($request->get('SITE_ID') ?: (isset($siteRes[0]['LID']) ? $siteRes[0]['LID'] : ''));\n$currentSiteHtml = htmlspecialcharsbx($currentSite);\n...\n<input type=\"hidden\" name=\"SITE_ID\" value=\"<?=$currentSiteHtml?>\"/>",
         "reviewed": {
           "oldSeverity": "medium",
           "newSeverity": "medium",
           "changed": false,
-          "category": "kept-as-reported",
+          "category": "public-reflected-xss",
           "versionScope": "current",
           "version": "current",
           "currentVersionRelevance": "present-in-current-scan",
           "action": "fix",
-          "confidence": "medium",
-          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-10-11T16:48:49+00:00"
+          "confidence": "high",
+          "rationale": "Set to medium because reflected XSS is significant but not high under the BUS Marketplace triage policy unless chained to stronger impact proven outside the journal text."
         }
       },
       {
         "file": "options.php",
-        "line": "153-163",
-        "type": "RCE",
+        "line": "285-286",
+        "type": "Cross-Site Scripting",
         "severity": "medium",
-        "description": "Подтверждена (источник для находки в lib/canonical/handler.php): сохранение сырых пользовательских PCRE-паттернов. POST-обработчик (защищён check_bitrix_sessid + AccessController::isEditSettings, строка 122) принимает массив CANONICAL[REGEX][FROM]/[TO] и сохраняет его serialize() в опцию CANONICAL_REGEX без какой-либо валидации паттернов: не проверяется синтаксис, модификаторы (в т.ч. потенциально опасные на старых PHP), длина и отсутствие катастрофического бэктрекинга. Значение затем исполняется как PCRE-паттерн на каждом публичном запросе сайта (см. связанную запись lib/canonical/handler.php:139-166). CSRF-защита и проверка прав присутствуют, поэтому эксплуатация возможна только привилегированным оператором (или через CSRF-атакующего с его сессией — но sessid это блокирует).",
-        "recommendation": "Валидировать каждый паттерн при сохранении: проверять синтаксис, белый список модификаторов, ограничение длины, тестовый прогон с временным лимитом pcre.backtrack_limit; отклонять опасные паттерны с сообщением об ошибке, а не сохранять их.",
-        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $to = trim((string)($regexTo[$idx] ?? ''));\n    //валидация: синтаксис + защита от катастрофического бэктрекинга\n    $oldLimit = ini_set('pcre.backtrack_limit', 1000);\n    $valid = @preg_match($from, '') !== false;\n    $t0 = microtime(true);\n    if($valid) @preg_replace($from, $to, 'https://example.com/test-page/');\n    ini_set('pcre.backtrack_limit', $oldLimit);\n    if(!$valid || microtime(true) - $t0 > 0.05) continue; //опасный/невалидный паттерн не сохраняем\n    $regexRules[] = ['FROM' => $from, 'TO' => $to];\n    if(count($regexRules) >= CanonicalHandler::REGEX_MAX_RULES) break;\n}",
+        "description": "Подозрение: stored XSS в селекторе выбора сайта. Значения $arSite['LID'] и $arSite['NAME'] из таблицы b_site выводятся без экранирования (строки 285-286: value=\"<?=$saveUrl?>&SITE_ID=<?=$arSite['LID']?>\" и текст [<?=$arSite['LID']?>] - <?=$arSite['NAME']?>). Источник — БД, поле NAME сайта заполняется администратором, поэтому эксплуатация требует уже скомпрометированной админ-учётки или стороннего модуля, пишущего в b_site (вторичный вектор). Цель вывода — страница настроек модуля, где её видят администраторы/операторы с SETT_VIEW.",
+        "recommendation": "Экранировать поля БД при выводе в HTML-атрибуте и тексте через htmlspecialcharsbx; NAME сайта дополнительно прогонять через CUtil::JSEscape если попадает в JS-контекст.",
+        "fix": "Before:\n<option value=\"<?=$saveUrl?>&SITE_ID=<?=$arSite['LID']?>\"...>\n    [<?=$arSite['LID']?>] - <?=$arSite['NAME']?>\n</option>\n\nAfter:\n<option value=\"<?=htmlspecialcharsbx($saveUrl.'&SITE_ID='.$arSite['LID'])?>\"...>\n    [<?=htmlspecialcharsbx($arSite['LID'])?>] - <?=htmlspecialcharsbx($arSite['NAME'])?>\n</option>",
         "reviewed": {
-          "oldSeverity": "medium",
+          "oldSeverity": "low",
           "newSeverity": "medium",
+          "changed": true,
+          "category": "cross-privilege-stored-xss",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Set to medium because data controlled by a lower-privileged actor appears to execute in an administrator/moderation/order interface."
+        }
+      },
+      {
+        "file": "lib/canonical/handler.php",
+        "line": "139-166",
+        "type": "Code Injection",
+        "severity": "low",
+        "description": "Подтверждено исполнение сырого PCRE-паттерна из настроек модуля на каждом публичном запросе. Опция CANONICAL_REGEX (сериализованный массив правил FROM/TO, сохраняется в options.php строками 156-164 без валидации содержимого) подаётся в applyRegexRules(), где каждый $from напрямую используется как паттерн preg_match/preg_replace (строки 158-160), а $to — как замена. Вектор записи — только пользователь с правом ACTION_SETT_EDIT (редактирование настроек в options.php под проверкой AccessController::isEditSettings() + check_bitrix_sessid()), поэтому прямой неавторизованный путь отсутствует. Риски: (1) на PHP < 7 модификатор /e в паттерне превратил бы preg_replace в RCE; (2) на актуальном PHP — ReDoS: катастрофический бэктрекинг в правиле вешает обработку OnEpilog на каждый запрос сайта (DoS всего сайта одним значением настройки); (3) произвольная замена позволяет подменять canonical на любой URL. unserialize при этом безопасен (allowed_classes=false).",
+        "recommendation": "Валидировать паттерн при сохранении в options.php (запрет модификаторов e, ограничение длины, проверка @preg_match), а на исполнении — ограничить backtrack_limit и кэшировать применение; при возможности перейти с сырых regex на безопасный формат (маски/строки замен).",
+        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '' || mb_strlen($from) > 512) continue;\n    if(preg_match('#[eE]\\\\s*$#', $from) || stripos($from, 'e') === mb_strlen($from) - 2) continue;\n    if(@preg_match($from, '') === false) continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}\n\n// в applyRegexRules() дополнительно перед циклом:\n@ini_set('pcre.backtrack_limit', '1000');",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
           "changed": false,
           "category": "kept-as-reported",
           "versionScope": "current",
@@ -49,83 +64,115 @@
           "action": "fix",
           "confidence": "medium",
           "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
-        },
-        "partner_disposition": {
-          "status": "accepted_risk",
-          "note": "",
-          "author": "Andrew Zahalski",
-          "updated_at": "2026-10-11T16:48:49+00:00"
+        }
+      },
+      {
+        "file": "options.php",
+        "line": "154-164",
+        "type": "Code Injection",
+        "severity": "low",
+        "description": "Вторая сторона той же уязвимости (см. lib/canonical/handler.php:139-166): форма настроек сохраняет значения CANONICAL[REGEX][FROM][] и CANONICAL[REGEX][TO][] из POST в опцию CANONICAL_REGEX без какой-либо валидации PCRE-паттерна (нет preg_quote, нет запрета модификатора /e, нет проверки @preg_match, нет ограничения длины). Значение затем исполняется как паттерн preg_replace на каждом публичном запросе сайта (canonical/handler.php). Доступ ограничен правом ACTION_SETT_EDIT и check_bitrix_sessid(), поэтому severity понижена; основное воздействие — ReDoS/подмена canonical привилегированным пользователем, а на legacy PHP < 7 — RCE через /e.",
+        "recommendation": "Валидировать и санитизировать правила regex на этапе сохранения: отклонять паттерны с модификатором /e, ограничивать длину и количество, проверять компилируемость через @preg_match($from, '') === false.",
+        "fix": "Before:\n$regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n\nAfter:\nif(@preg_match($from, '') === false) continue;\nif(preg_match('#[a-zA-Z]*e[a-zA-Z]*$#', $from)) continue; // запрет /e\n$regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];",
+        "reviewed": {
+          "oldSeverity": "low",
+          "newSeverity": "low",
+          "changed": false,
+          "category": "kept-as-reported",
+          "versionScope": "current",
+          "version": "current",
+          "currentVersionRelevance": "present-in-current-scan",
+          "action": "fix",
+          "confidence": "medium",
+          "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
         }
       }
     ],
-    "summary": "Обнаружено 2 уязвимости в 2 файлах при анализе 51 целевого файла модуля (прочитано целиком 30 файлов, включая все entry points: options.php, AJAX-контроллер прав, обработчики OnPageStart/OnEpilog, подсистему доступа). Максимальная severity: medium. Отклонённые сигналы recon: exec() в usermodel.php — это Query->exec() построителя запросов (не OS-команда); unserialize в 3 местах — везде с ['allowed_classes'=>false]; SQL в handlers.php — с (int)-приведениями; file_get_contents в options.php и redirect/handler.php — с realpath-проверкой в пределах DOCUMENT_ROOT; include/require — только фиксированные пути ядра; LocalRedirect — на фиксированный URL настроек (по рубрике не баг); HTTP_HOST в redirect/canonical — санитизирован preg_replace('#[^a-zA-Z0-9\\.\\-\\:]#'). AJAX-контроллер seo.config.permissions защищён Authentication+Csrf+HttpMethod(POST)+проверкой AccessController. Функциональный баг (не уязвимость): install/unstep.php:13 — переменная $moduleId внутри одинарных кавычек не интерполируется, lang-файл не подключается.",
+    "summary": "Обнаружено 4 уязвимости в 2 файлах при полном аудите 51 файла модуля awz.seo v1.1.6. Максимальная severity: medium. Главная находка — reflected XSS в админ-настройках (GET SITE_ID выводится без экранирования, options.php:273). Прочее: хранимый XSS через имя сайта (низкая, admin-источник) и исполнение сырых admin-контролируемых PCRE-паттернов из настроек на каждом запросе (ReDoS/RCE на PHP<7, low). Сигналы recon проверены и отклонены как безопасные: unserialize везде с allowed_classes=false (options.php:436, checker.php:19, canonical/handler.php:144); SQL в handlers.php и usermodel.php построен на ORM/`(int)`-кастах без конкатенации пользовательских данных; чтение CSV (options.php:58-82, redirect/handler.php:236-263) защищено удалением '..' + realpath-проверкой в DOCUMENT_ROOT; cookie-счётчик редиректов приводится к int; контроллер seo.config.permissions/ajax.php имеет Authentication+HttpMethod(POST)+Csrf и проверку AccessController::can; AccessController::isViewSettings/isEditSettings корректно закрывают options.php; Open Redirect через LocalRedirect отсутствует (редирект только на GetCurPage с urlencode); внешние запросы (CHTTP::GetLastStatus) URL не запрашивают; захардкоженных секретов нет.",
     "scannedFiles": 51,
     "riskLevel": "medium",
     "auditedFiles": [
-      ".settings.php",
-      "include.php",
       "options.php",
+      "include.php",
+      ".settings.php",
       "admin/menu.php",
       "install/index.php",
+      "install/version.php",
       "install/solution.php",
       "install/unstep.php",
-      "install/version.php",
       "install/components/seo.config.permissions/ajax.php",
+      "install/components/seo.config.permissions/lang/ru/ajax.php",
+      "lang/ru/options.php",
+      "lang/ru/install/index.php",
+      "lang/ru/admin/menu.php",
+      "lang/ru/lib/access/permission/permissiondictionary.php",
+      "lang/ru/lib/access/include/moduleright.php",
+      "lang/ru/lib/access/entityselectors/user.php",
+      "lang/ru/lib/access/entityselectors/group.php",
+      "lang/ru/lib/access/component/configpermissions.php",
+      "lang/ru/lib/access/custom/componentconfig.php",
+      "lang/ru/lib/access/custom/permissiondictionary.php",
+      "lib/checker/checker.php",
+      "lib/redirect/handler.php",
+      "lib/canonical/handler.php",
+      "lib/meta/handler.php",
       "lib/access/accesscontroller.php",
       "lib/access/handlers.php",
-      "lib/access/component/configpermissions.php",
-      "lib/access/custom/actiondictionary.php",
-      "lib/access/custom/componentconfig.php",
-      "lib/access/custom/helper.php",
-      "lib/access/custom/permissiondictionary.php",
-      "lib/access/custom/roledictionary.php",
-      "lib/access/custom/rules/example.php",
-      "lib/access/entity/user.php",
-      "lib/access/entityselectors/group.php",
-      "lib/access/entityselectors/user.php",
-      "lib/access/include/moduleright.php",
-      "lib/access/model/basemodel.php",
       "lib/access/model/usermodel.php",
+      "lib/access/model/basemodel.php",
+      "lib/access/entity/user.php",
+      "lib/access/entityselectors/user.php",
+      "lib/access/entityselectors/group.php",
+      "lib/access/tables/role.php",
+      "lib/access/tables/rolerelation.php",
+      "lib/access/tables/permission.php",
+      "lib/access/include/moduleright.php",
+      "lib/access/component/configpermissions.php",
+      "lib/access/permission/rulefactory.php",
+      "lib/access/permission/roleutil.php",
       "lib/access/permission/actiondictionary.php",
       "lib/access/permission/permissiondictionary.php",
       "lib/access/permission/roledictionary.php",
-      "lib/access/permission/rulefactory.php",
-      "lib/access/permission/rules/rightedit.php",
-      "lib/access/permission/rules/rightview.php",
-      "lib/access/permission/rules/settedit.php",
       "lib/access/permission/rules/settview.php",
-      "lib/access/permission/roleutil.php",
-      "lib/access/tables/permission.php",
-      "lib/access/tables/role.php",
-      "lib/access/tables/rolerelation.php",
-      "lib/canonical/handler.php",
-      "lib/checker/checker.php",
-      "lib/meta/handler.php",
-      "lib/redirect/handler.php"
+      "lib/access/permission/rules/settedit.php",
+      "lib/access/permission/rules/rightview.php",
+      "lib/access/permission/rules/rightedit.php",
+      "lib/access/custom/helper.php",
+      "lib/access/custom/actiondictionary.php",
+      "lib/access/custom/componentconfig.php",
+      "lib/access/custom/permissiondictionary.php",
+      "lib/access/custom/roledictionary.php",
+      "lib/access/custom/rules/example.php"
     ],
     "reviewSummary": {
-      "reviewedAt": "2026-09-18",
+      "reviewedAt": "2026-11-08",
       "method": "BUS-aware triage: preserve original finding fields except severity, add reviewed node with old severity and rationale.",
       "totals": {
-        "vulnerabilities": 2,
-        "changedSeverity": 0,
-        "unchangedSeverity": 2
+        "vulnerabilities": 4,
+        "changedSeverity": 1,
+        "unchangedSeverity": 3
       },
       "rawSeverityCounts": {
-        "medium": 2
+        "medium": 1,
+        "low": 3
       },
       "reviewedSeverityCounts": {
-        "medium": 2
+        "medium": 2,
+        "low": 2
       },
       "currentScope": {
-        "total": 2,
+        "total": 4,
         "rawSeverityCounts": {
-          "medium": 2
+          "medium": 1,
+          "low": 3
         },
         "reviewedSeverityCounts": {
-          "medium": 2
+          "medium": 2,
+          "low": 2
         },
         "reviewedCategories": {
+          "public-reflected-xss": 1,
+          "cross-privilege-stored-xss": 1,
           "kept-as-reported": 2
         }
       },
@@ -139,10 +186,6 @@
         "Type, file, line, description, recommendation and fix are preserved from the source journal.",
         "Severity is replaced with reviewed triage severity."
       ]
-    },
-    "feedbackSummary": {
-      "updatedAt": "2026-10-11T16:48:49+00:00",
-      "applied": 2
     }
   }
 }
