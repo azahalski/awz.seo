@@ -587,7 +587,7 @@ $ext = Extension::load("ui.alerts");
         </div>
     </form>
 
-    <div class="awz-seo-check">
+    <div class="awz-seo-check" style="display:none;">
         <div>
             <div style="font-weight:600;font-size:14px;color:#1d2433;"><?=Loc::getMessage('AWZ_SEO_OPT_CHECK_HEAD')?></div>
             <div style="font-size:12px;color:#5b6472;margin-top:3px;"><?=Loc::getMessage('AWZ_SEO_OPT_CHECK_DESC')?></div>
