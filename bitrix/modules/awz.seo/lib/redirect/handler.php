@@ -395,11 +395,30 @@ class Handler
         return false;
     }
 
+    /** @var array<string,string> кеш host по siteId (host берётся только из настроек сайта) */
+    protected static array $siteHostCache = [];
+
     protected static function getHost(HttpRequest $request, string $scheme = 'http'): string
     {
-        $host = (string)$request->getServer()->get('HTTP_HOST');
-        if ($host === '')
-            $host = (string)$request->getServer()->get('SERVER_NAME');
+        $siteId = defined('SITE_ID') ? (string)SITE_ID : '';
+        if (!array_key_exists($siteId, static::$siteHostCache)) {
+            //хост берём только из настроек сайта (b_lang.SERVER_NAME), значение из запроса не используем
+            $siteHost = '';
+            $res = \Bitrix\Main\SiteTable::getList([
+                'select' => ['SERVER_NAME'],
+                'filter' => $siteId !== '' ? ['=LID' => $siteId] : []
+            ]);
+            while ($row = $res->fetch()) {
+                $siteHost = (string)$row['SERVER_NAME'];
+                if ($siteHost !== '') break;
+            }
+            if ($siteHost === '') {
+                $siteHost = (string)$request->getServer()->get('SERVER_NAME');
+            }
+            static::$siteHostCache[$siteId] = $siteHost;
+        }
+
+        $host = static::$siteHostCache[$siteId];
 
         //защита от инъекции в заголовок Location
         $host = (string)preg_replace('#[^a-zA-Z0-9\.\-\:]#', '', $host);

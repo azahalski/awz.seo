@@ -180,7 +180,11 @@ if ($request->getRequestMethod()==='POST' && AccessController::isEditSettings() 
 }
 
 $saveUrl = $APPLICATION->GetCurPage(false).'?mid='.htmlspecialcharsbx($module_id).'&lang='.LANGUAGE_ID.'&mid_menu=1';
-$currentSite = (string)($request->get('SITE_ID') ?: (isset($siteRes[0]['LID']) ? $siteRes[0]['LID'] : ''));
+$currentSite = (string)$request->get('SITE_ID');
+$siteIds = array_column($siteRes, 'LID');
+if(!in_array($currentSite, $siteIds, true)){
+    $currentSite = (string)($siteRes[0]['LID'] ?? '');
+}
 $canEdit = AccessController::isEditSettings();
 $disabledAttr = $canEdit ? '' : ' disabled';
 
@@ -270,7 +274,7 @@ $ext = Extension::load("ui.alerts");
 
     <form method="POST" action="<?=$saveUrl?>" id="FORMACTION">
         <?=bitrix_sessid_post()?>
-        <input type="hidden" name="SITE_ID" value="<?=$currentSite?>"/>
+        <input type="hidden" name="SITE_ID" value="<?=htmlspecialcharsbx($currentSite)?>"/>
 
         <div class="awz-seo-card">
             <div class="awz-seo-card__head">
