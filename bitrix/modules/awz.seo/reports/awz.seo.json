@@ -1,0 +1,61 @@
+{
+  "success": true,
+  "requestId": "awz.seo-1795391108",
+  "data": {
+    "vulnerabilities": [
+      {
+        "file": "lib/redirect/handler.php",
+        "line": "341-358",
+        "type": "Open Redirect",
+        "severity": "medium",
+        "description": "Подтверждена уязвимость Open Redirect в методе buildRedirectUrl (строки 341-358). Метод принимает $target из CSV-файла кастомных редиректов (настраивается администратором через REDIRECT[CSV_PATH] в options.php) и при обнаружении схемы http:// или https:// возвращает URL без какой-либо валидации: 'if (preg_match(\"#^https?://#i\", $target)) { return $target; }'. Далее этот URL используется как цель редиректа через Response->redirectTo() (issueRedirect, строка 379). Вектор эксплуатации: оператор с правом ACTION_SETT_EDIT настраивает CSV-файл, содержащий запись вида «http://attacker.com/target,https://evil.com», либо загружает CSV с таким содержимым (через FTP/SFTP/админку сервера). При посещении пользователя URL, совпадающего с FROM-частью, происходит редирект на злоумышленничный домен. Атакующий может использовать это для фишинга, обхода доверия к домену сайта или передачи жертвы на страницу с кражей данных. Severity = medium по rubric: open redirect для авторизованного оператора.",
+        "recommendation": "В buildRedirectUrl() добавить валидацию целевого хоста: разрешить только домены из allowlist (домены текущего сайта), отклонять сторонние URL. Альтернативно — требовать чтобы путь начинался с '/' и не допускал protocol-relative или полные внешние URLs. Отдельно: при сохранении CSV-пути в options.php валидировать каждую строку CSV перед записью.",
+        "fix": "Before:\nprotected static function buildRedirectUrl(string $target, HttpRequest $request, ?string $query): string\n{\n    $target = trim($target);\n    if ($target === '')\n        return '';\n    if (preg_match('#^https?://#i', $target)) {\n        //полный URL - используем как есть\n        return $target;\n    }\n\nAfter:\nprotected static function buildRedirectUrl(string $target, HttpRequest $request, ?string $query): string\n{\n    $target = trim($target);\n    if ($target === '')\n        return '';\n    //разрешаем полные URL только с хостов текущего сайта\n    if (preg_match('#^https?://#i', $target)) {\n        $parsed = parse_url($target);\n        if ($parsed && isset($parsed['host'])) {\n            $allowedHosts = self::getAllowedHosts();\n            if (!in_array(strtolower($parsed['host']), $allowedHosts, true)) {\n                return ''; //отклоняем сторонний хост\n            }\n        } else {\n            return '';\n        }\n        return $target;\n    }\n"
+      },
+      {
+        "file": "lib/canonical/handler.php",
+        "line": "139-166",
+        "type": "Code Injection",
+        "severity": "low",
+        "description": "Подтверждено исполнение сырого PCRE-паттерна из настроек модуля на каждом публичном запросе. Опция CANONICAL_REGEX (сериализованный массив правил FROM/TO, сохраняется в options.php строками 156-164 без валидации содержимого паттерна) подаётся в applyRegexRules(), где каждый $from напрямую используется как паттерн preg_match/preg_replace (строки 158-160), а $to — как замена. unserialize безопасен (allowed_classes=false). Вектор записи — пользователь с правом ACTION_SETT_EDIT + check_bitrix_sessid(). Риски: (1) ReDoS на сложном паттерне — выполнение вешает OnEpilog на каждый запрос; (2) на PHP < 7 модификатор /e мог вызвать RCE (защита через @preg_match($from,'')===false пропускает валидные паттерны с /e); (3) произвольная замена canonical URL. Severity = low — требует привилегий администратора.",
+        "recommendation": "Валидировать паттерн при сохранении в options.php (запрет модификаторов e, ограничение длины, проверка компилируемости через @preg_match). На исполнении — ограничить backtrack_limit PHP.",
+        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '' || mb_strlen($from) > 512) continue;\n    if(stripos($from, 'e') !== false && preg_match('#/[a-zA-Z]*e[a-zA-Z]*$#', $from)) continue;\n    if(@preg_match($from, '') === false) continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}"
+      },
+      {
+        "file": "options.php",
+        "line": "154-164",
+        "type": "Code Injection",
+        "severity": "low",
+        "description": "Вторая сторона уязвимости Regex Injection (см. lib/canonical/handler.php:139-166): форма настроек сохраняет значения CANONICAL[REGEX][FROM][] и CANONICAL[REGEX][TO][] из POST в опцию CANONICAL_REGEX без валидации PCRE-паттерна (нет запрета модификатора /e, нет ограничения длины, кроме базовой проверки пустоты и лимита количества правил REGEX_MAX_RULES=30). Значение затем сериализуется и применяется как паттерн preg_replace на каждом публичном запросе. Доступ ограничен правом ACTION_SETT_EDIT + check_bitrix_sessid(). Основное воздействие — ReDoS/подмена canonical, на legacy PHP < 7 — RCE через /e.",
+        "recommendation": "Валидировать и санитизировать regex-правила при сохранении: запрет модификатора /e, ограничение длины, проверка компилируемости.",
+        "fix": "Before:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '') continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}\n\nAfter:\nforeach($regexFrom as $idx => $from){\n    $from = trim((string)$from);\n    if($from === '' || mb_strlen($from) > 512) continue;\n    if(stripos($from, 'e') !== false && preg_match('#/[a-zA-Z]*e[a-zA-Z]*$#', $from)) continue;\n    if(@preg_match($from, '') === false) continue;\n    $regexRules[] = ['FROM' => $from, 'TO' => trim((string)($regexTo[$idx] ?? ''))];\n}"
+      },
+      {
+        "file": "options.php",
+        "line": "289-290",
+        "type": "Cross-Site Scripting",
+        "severity": "low",
+        "description": "Подозрение: stored XSS в селекторе выбора сайта. Значения $arSite['LID'] и $arSite['NAME'] из таблицы b_site выводятся без экранирования в HTML-атрибуте и тексте option (строка 289: value=\"<?=$saveUrl?>&SITE_ID=<?=$arSite['LID']?>\" и текст [<?=$arSite['LID']?>] - <?=$arSite['NAME']?>). Источник — БД, поле NAME сайта заполняется администратором Bitrix. Эксплуатация требует уже скомпрометированной учётки, пишущей в b_site (или стороннего модуля). Цель вывода — страница настроек модуля (видят администраторы с SETT_VIEW). Это self-XSS для admin-контекста, поэтому severity низкая.",
+        "recommendation": "Экранировать поля БД при выводе через htmlspecialcharsbx для HTML-атрибутов и текста.",
+        "fix": "Before:\n<option value=\"<?=$saveUrl?>&SITE_ID=<?=$arSite['LID']?>\"...>\n    [<?=$arSite['LID']?>] - <?=$arSite['NAME']?>\n</option>\n\nAfter:\n<option value=\"<?=htmlspecialcharsbx($saveUrl.'&SITE_ID='.$arSite['LID'])?>\"...>\n    [<?=htmlspecialcharsbx($arSite['LID'])?>] - <?=htmlspecialcharsbx($arSite['NAME'])?>\n</option>"
+      }
+    ],
+    "summary": "Обнаружено 4 уязвимости в 3 файлах при анализе 51 файла модуля awz.seo. Максимальная severity: medium. Новая находка: Open Redirect в lib/redirect/handler.php:341-358 (buildRedirectUrl передаёт full URL из CSV-рейдиректов без валидации хоста). Подтверждены ранее найденные: Code Injection (regex injection) в lib/canonical/handler.php:139-166 и options.php:154-164 (оба low, требуют ACTION_SETT_EDIT), Stored XSS в options.php:289-290 (low, admin-sourced). Отклонено как исправленное: Reflected XSS SITE_ID (options.php:273 — ранее сообщалось, в текущем коде line 277 экранировано htmlspecialcharsbx()). CSRF защита корректна (Authentication+Csrf+HttpMethod(POST) в ajax.php, bitrix_sessid() в options.php:123). Deserialization везде с allowed_classes=false. SQL через ORM/SqlHelper с (int)-приведениями. File operations защищены realpath()+DOCUMENT_ROOT проверкой. LocalRedirect не является уязвимостью по рубрике.",
+    "scannedFiles": 51,
+    "riskLevel": "medium",
+    "auditedFiles": [
+      "install/components/seo.config.permissions/ajax.php",
+      "install/index.php",
+      "install/solution.php",
+      "install/unstep.php",
+      "lib/access/accesscontroller.php",
+      "lib/access/handlers.php",
+      "lib/access/model/usermodel.php",
+      "lib/canonical/handler.php",
+      "lib/checker/checker.php",
+      "lib/meta/handler.php",
+      "lib/redirect/handler.php",
+      "options.php"
+    ]
+  }
+}
