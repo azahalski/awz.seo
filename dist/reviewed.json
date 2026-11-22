@@ -145,7 +145,7 @@
       "lib/access/custom/rules/example.php"
     ],
     "reviewSummary": {
-      "reviewedAt": "2026-11-08",
+      "reviewedAt": "2026-11-22",
       "method": "BUS-aware triage: preserve original finding fields except severity, add reviewed node with old severity and rationale.",
       "totals": {
         "vulnerabilities": 4,

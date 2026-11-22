@@ -103,6 +103,24 @@
         "reopened_findings": 0,
         "resolved_since_previous_run": 2
       }
+    },
+    {
+      "run_id": "awz-seo-scan-1794139899",
+      "created_at": "2026-11-22T20:07:06+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz-seo-scan-1794139899",
+      "input_summary": "Обнаружено 4 уязвимости в 2 файлах при полном аудите 51 файла модуля awz.seo v1.1.6. Максимальная severity: medium. Главная находка — reflected XSS в админ-настройках (GET SITE_ID выводится без экранирования, options.php:273). Прочее: хранимый XSS через имя сайта (низкая, admin-источник) и исполнение сырых admin-контролируемых PCRE-паттернов из настроек на каждом запросе (ReDoS/RCE на PHP<7, low). Сигналы recon проверены и отклонены как безопасные: unserialize везде с allowed_classes=false (options.php:436, checker.php:19, canonical/handler.php:144); SQL в handlers.php и usermodel.php построен на ORM/`(int)`-кастах без конкатенации пользовательских данных; чтение CSV (options.php:58-82, redirect/handler.php:236-263) защищено удалением '..' + realpath-проверкой в DOCUMENT_ROOT; cookie-счётчик редиректов приводится к int; контроллер seo.config.permissions/ajax.php имеет Authentication+HttpMethod(POST)+Csrf и проверку AccessController::can; AccessController::isViewSettings/isEditSettings корректно закрывают options.php; Open Redirect через LocalRedirect отсутствует (редирект только на GetCurPage с urlencode); внешние запросы (CHTTP::GetLastStatus) URL не запрашивают; захардкоженных секретов нет.",
+      "summary": {
+        "current_scan_findings": 4,
+        "severity_counts": {
+          "medium": 2,
+          "low": 2
+        },
+        "new_findings": 0,
+        "still_open_findings": 4,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 0
+      }
     }
   ],
   "findings": [
@@ -1390,6 +1408,16 @@
             "line": "183,273"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz-seo-scan-1794139899",
+          "event": "detected_again",
+          "at": "2026-11-22T20:07:06+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "183,273"
+          },
+          "status": "open"
         }
       ]
     },
@@ -1436,6 +1464,16 @@
           "run_id": "awz-seo-scan-1794139899",
           "event": "detected",
           "at": "2026-11-08T09:21:05+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "285-286"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz-seo-scan-1794139899",
+          "event": "detected_again",
+          "at": "2026-11-22T20:07:06+00:00",
           "location": {
             "file": "options.php",
             "line": "285-286"
@@ -1492,6 +1530,16 @@
             "line": "139-166"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz-seo-scan-1794139899",
+          "event": "detected_again",
+          "at": "2026-11-22T20:07:06+00:00",
+          "location": {
+            "file": "lib/canonical/handler.php",
+            "line": "139-166"
+          },
+          "status": "open"
         }
       ]
     },
@@ -1538,6 +1586,16 @@
           "run_id": "awz-seo-scan-1794139899",
           "event": "detected",
           "at": "2026-11-08T09:21:05+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "154-164"
+          },
+          "status": "open"
+        },
+        {
+          "run_id": "awz-seo-scan-1794139899",
+          "event": "detected_again",
+          "at": "2026-11-22T20:07:06+00:00",
           "location": {
             "file": "options.php",
             "line": "154-164"
