@@ -591,6 +591,7 @@ $ext = Extension::load("ui.alerts");
         </div>
     </form>
 
+    <?if(false){?>
     <div class="awz-seo-check" style="display:none;">
         <div>
             <div style="font-weight:600;font-size:14px;color:#1d2433;"><?=Loc::getMessage('AWZ_SEO_OPT_CHECK_HEAD')?></div>
@@ -603,6 +604,7 @@ $ext = Extension::load("ui.alerts");
             </a>
         </form>
     </div>
+    <?}?>
 </div>
 <?
 if($request->get('saved')==='Y'){

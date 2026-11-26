@@ -136,7 +136,7 @@ class Handler
             if ($description !== '') {
                 $APPLICATION->SetPageProperty(
                     'description',
-                    $description.' '.self::replaceMacro($descTpl, $pageNum)
+                    $description.' '.htmlspecialcharsbx(self::replaceMacro($descTpl, $pageNum))
                 );
             }
         }
@@ -146,7 +146,7 @@ class Handler
             if ($pageTitle !== '' && mb_stripos($pageTitle, '#PAGE#') === false) {
                 $APPLICATION->SetPageProperty(
                     'PAGE_TITLE',
-                    $pageTitle.' '.self::replaceMacro($pageTitleTpl, $pageNum)
+                    $pageTitle.' '.htmlspecialcharsbx(self::replaceMacro($pageTitleTpl, $pageNum))
                 );
             }
         }

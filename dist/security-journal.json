@@ -7,10 +7,10 @@
     "status": "needs_review",
     "last_run_id": "awz.seo-1795391108",
     "archive_sha256": null,
-    "open_findings": 4,
+    "open_findings": 0,
     "blocking_findings_open": 0,
     "false_positive_findings": 0,
-    "accepted_risk_findings": 0,
+    "accepted_risk_findings": 4,
     "fixed_findings": 20,
     "removed_findings": 0,
     "total_findings": 24
@@ -1659,7 +1659,7 @@
       "fingerprint": "ec4d5f378e7c674bb879c6bcca3eefae",
       "type": "Open Redirect",
       "severity": "medium",
-      "status": "open",
+      "status": "accepted_risk",
       "first_seen_run_id": "awz.seo-1795391108",
       "last_seen_run_id": "awz.seo-1795391108",
       "resolved_run_id": null,
@@ -1690,6 +1690,12 @@
           "action": "validate-source-and-allowlist",
           "confidence": "low",
           "rationale": "Left as medium pending confirmation of whether the redirect target is request-controlled or only editable by trusted administrators."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-11-23T11:46:24+00:00"
         }
       },
       "events": [
@@ -1702,6 +1708,14 @@
             "line": "341-358"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
         }
       ]
     },
@@ -1710,7 +1724,7 @@
       "fingerprint": "c3bd7553f42c33559fe365e240c1420d",
       "type": "Code Injection",
       "severity": "low",
-      "status": "open",
+      "status": "accepted_risk",
       "first_seen_run_id": "awz.seo-1795391108",
       "last_seen_run_id": "awz.seo-1795391108",
       "resolved_run_id": null,
@@ -1741,6 +1755,12 @@
           "action": "fix",
           "confidence": "medium",
           "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-11-23T11:46:24+00:00"
         }
       },
       "events": [
@@ -1753,6 +1773,14 @@
             "line": "139-166"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
         }
       ]
     },
@@ -1761,7 +1789,7 @@
       "fingerprint": "9f92766b3ea5b45915f41ee6d0601f41",
       "type": "Code Injection",
       "severity": "low",
-      "status": "open",
+      "status": "accepted_risk",
       "first_seen_run_id": "awz.seo-1795391108",
       "last_seen_run_id": "awz.seo-1795391108",
       "resolved_run_id": null,
@@ -1792,6 +1820,12 @@
           "action": "fix",
           "confidence": "medium",
           "rationale": "Severity left unchanged after review; no stronger Bitrix/BUS-specific downgrade condition was identified from the journal text alone."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-11-23T11:46:24+00:00"
         }
       },
       "events": [
@@ -1804,6 +1838,14 @@
             "line": "154-164"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
         }
       ]
     },
@@ -1812,7 +1854,7 @@
       "fingerprint": "861faa27af72d60397ef6488b2cd89b5",
       "type": "Cross-Site Scripting",
       "severity": "low",
-      "status": "open",
+      "status": "accepted_risk",
       "first_seen_run_id": "awz.seo-1795391108",
       "last_seen_run_id": "awz.seo-1795391108",
       "resolved_run_id": null,
@@ -1843,6 +1885,12 @@
           "action": "harden-output-escaping",
           "confidence": "high",
           "rationale": "Downgraded because the journal describes a stored XSS source controlled by a Bitrix admin/content editor or another trusted content-management role. In BUS such users can normally publish HTML/JS through legitimate site-management mechanisms, so this is template hardening rather than a high module vulnerability unless a low-privileged/external source is proven."
+        },
+        "partner_disposition": {
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski",
+          "updated_at": "2026-11-23T11:46:24+00:00"
         }
       },
       "events": [
@@ -1855,6 +1903,14 @@
             "line": "289-290"
           },
           "status": "open"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
         }
       ]
     }

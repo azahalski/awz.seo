@@ -118,6 +118,17 @@ class Handler
         if ($host === '')
             return;
 
+        //домен canonical берём из настроек сайта, а не из заголовка запроса (host header injection)
+        if (!self::isAllowedHost($host)) {
+            $row = \Bitrix\Main\SiteTable::getList([
+                'select' => ['SERVER_NAME'],
+                'filter' => ['=LID' => $siteId]
+            ])->fetch();
+            $siteHost = is_array($row) ? (string)($row['SERVER_NAME'] ?? '') : '';
+            if ($siteHost !== '')
+                $host = $siteHost;
+        }
+
         $canonical = ($https ? 'https' : 'http').'://'.$host.$newUri;
         $canonical = self::applyRegexRules(
             $canonical,
@@ -130,6 +141,25 @@ class Handler
                 htmlspecialcharsbx($canonical)
             );
         }
+    }
+
+    /**
+     * Проверяет, что хост запроса соответствует домену одного из сайтов (без www).
+     * Защита от подмены заголовка Host в canonical.
+     */
+    protected static function isAllowedHost(string $host): bool
+    {
+        $bare = (string)preg_replace('#^www\.#i', '', strtolower($host));
+        if ($bare === '')
+            return false;
+        $res = \Bitrix\Main\SiteTable::getList(['select' => ['SERVER_NAME']]);
+        while ($row = $res->fetch()) {
+            $siteHost = (string)preg_replace('#^www\.#i', '', strtolower((string)($row['SERVER_NAME'] ?? '')));
+            if ($siteHost !== '' && $siteHost === $bare) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -157,9 +187,25 @@ class Handler
             //проверка валидности регулярки
             if (@preg_match($from, '') === false)
                 continue;
+            //модификатор e и прочие небезопасные модификаторы недопустимы
+            if (!preg_match('#^(.*?)([a-zA-Z]*)$#s', $from, $m) || strpbrk($m[2], 'e') !== false) {
+                continue;
+            }
+            $safeModifiers = preg_replace('#[imsxuADSUXJn]#', '', $m[2]);
+            if ($safeModifiers !== '') {
+                continue;
+            }
+            //ограничиваем backtrack на время применения правила (защита от ReDoS)
+            $prevBacktrack = ini_get('pcre.backtrack_limit');
+            ini_set('pcre.backtrack_limit', '100000');
             $result = @preg_replace($from, $to, $url);
-            if (is_string($result))
+            ini_set('pcre.backtrack_limit', is_string($prevBacktrack) ? $prevBacktrack : '1000000');
+            if (preg_last_error() !== PREG_NO_ERROR) {
+                continue;
+            }
+            if (is_string($result)) {
                 $url = $result;
+            }
         }
 
         return $url;
