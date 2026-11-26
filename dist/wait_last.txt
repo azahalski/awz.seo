@@ -1,6 +1,0 @@
-find session id 51376e4d8eec092af874233d1680c634
-send https://partners.1c-bitrix.ru/personal/modules/deploy.php?ID=awz.seo Версия 1.1.9 успешно сохранена. 
-send https://partners.1c-bitrix.ru/personal/modules/update.php Типы версий успешно сохранены. 
-send https://partners.1c-bitrix.ru/personal/modules/edit.php?ID=awz.seo Решение успешно изменено. Рассмотрение очередной заявки на модерацию модуля маркетплейс обычно проходит в течение одной недели.<br>
-                                        Номер заявки в очереди: 16
-send https://partners.1c-bitrix.ru/personal/modules/update.php  В очереди на проверке безопасности
