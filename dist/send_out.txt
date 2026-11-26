@@ -1,0 +1,5 @@
+﻿find session id c220fc589edaf4e9d6b093a1daa53778
+send https://partners.1c-bitrix.ru/personal/modules/deploy.php?ID=awz.seo ������ 1.1.9 ������� ���������. 
+send https://partners.1c-bitrix.ru/personal/modules/update.php ���� ������ ������� ���������. 
+send https://partners.1c-bitrix.ru/personal/modules/edit.php?ID=awz.seo ������� ������� ��������. �� �� ������ ��������� ����� ��� ����������� �������.
+send https://partners.1c-bitrix.ru/personal/modules/update.php  � ������� �� �������� ������������

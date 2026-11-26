@@ -139,6 +139,24 @@
         "reopened_findings": 0,
         "resolved_since_previous_run": 4
       }
+    },
+    {
+      "run_id": "awz.seo-1795391108",
+      "created_at": "2026-11-26T22:29:02+00:00",
+      "archive_sha256": null,
+      "scanner_request_id": "awz.seo-1795391108",
+      "input_summary": "Обнаружено 4 уязвимости в 3 файлах при анализе 51 файла модуля awz.seo. Максимальная severity: medium. Новая находка: Open Redirect в lib/redirect/handler.php:341-358 (buildRedirectUrl передаёт full URL из CSV-рейдиректов без валидации хоста). Подтверждены ранее найденные: Code Injection (regex injection) в lib/canonical/handler.php:139-166 и options.php:154-164 (оба low, требуют ACTION_SETT_EDIT), Stored XSS в options.php:289-290 (low, admin-sourced). Отклонено как исправленное: Reflected XSS SITE_ID (options.php:273 — ранее сообщалось, в текущем коде line 277 экранировано htmlspecialcharsbx()). CSRF защита корректна (Authentication+Csrf+HttpMethod(POST) в ajax.php, bitrix_sessid() в options.php:123). Deserialization везде с allowed_classes=false. SQL через ORM/SqlHelper с (int)-приведениями. File operations защищены realpath()+DOCUMENT_ROOT проверкой. LocalRedirect не является уязвимостью по рубрике.",
+      "summary": {
+        "current_scan_findings": 4,
+        "severity_counts": {
+          "medium": 1,
+          "low": 3
+        },
+        "new_findings": 0,
+        "still_open_findings": 4,
+        "reopened_findings": 0,
+        "resolved_since_previous_run": 0
+      }
     }
   ],
   "findings": [
@@ -1695,7 +1713,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-11-23T11:46:24+00:00"
+          "updated_at": "2026-11-26T22:34:32+00:00"
         }
       },
       "events": [
@@ -1713,6 +1731,24 @@
           "run_id": "awz.seo-1795391108",
           "event": "partner_disposition_updated",
           "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "detected_again",
+          "at": "2026-11-26T22:29:02+00:00",
+          "location": {
+            "file": "lib/redirect/handler.php",
+            "line": "341-358"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-26T22:34:32+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -1760,7 +1796,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-11-23T11:46:24+00:00"
+          "updated_at": "2026-11-26T22:34:32+00:00"
         }
       },
       "events": [
@@ -1778,6 +1814,24 @@
           "run_id": "awz.seo-1795391108",
           "event": "partner_disposition_updated",
           "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "detected_again",
+          "at": "2026-11-26T22:29:02+00:00",
+          "location": {
+            "file": "lib/canonical/handler.php",
+            "line": "139-166"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-26T22:34:32+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -1825,7 +1879,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-11-23T11:46:24+00:00"
+          "updated_at": "2026-11-26T22:34:32+00:00"
         }
       },
       "events": [
@@ -1843,6 +1897,24 @@
           "run_id": "awz.seo-1795391108",
           "event": "partner_disposition_updated",
           "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "detected_again",
+          "at": "2026-11-26T22:29:02+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "154-164"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-26T22:34:32+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"
@@ -1890,7 +1962,7 @@
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski",
-          "updated_at": "2026-11-23T11:46:24+00:00"
+          "updated_at": "2026-11-26T22:34:32+00:00"
         }
       },
       "events": [
@@ -1908,6 +1980,24 @@
           "run_id": "awz.seo-1795391108",
           "event": "partner_disposition_updated",
           "at": "2026-11-23T11:46:24+00:00",
+          "status": "accepted_risk",
+          "note": "",
+          "author": "Andrew Zahalski"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "detected_again",
+          "at": "2026-11-26T22:29:02+00:00",
+          "location": {
+            "file": "options.php",
+            "line": "289-290"
+          },
+          "status": "accepted_risk"
+        },
+        {
+          "run_id": "awz.seo-1795391108",
+          "event": "partner_disposition_updated",
+          "at": "2026-11-26T22:34:32+00:00",
           "status": "accepted_risk",
           "note": "",
           "author": "Andrew Zahalski"

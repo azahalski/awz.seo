@@ -1,0 +1,7 @@
+find session id 1f0bdde4e22d7a826fd0da67ad008cfa
+send https://partners.1c-bitrix.ru/personal/modules/deploy.php?ID=awz.seo Версия 1.1.9 успешно сохранена. 
+send https://partners.1c-bitrix.ru/personal/modules/update.php Типы версий успешно сохранены. 
+send https://partners.1c-bitrix.ru/personal/modules/edit.php?ID=awz.seo Решение успешно изменено. Вы не можете запросить баллы для неактивного решения.
+send https://partners.1c-bitrix.ru/personal/modules/update.php  В очереди на проверке безопасности
+
+--ERR--
