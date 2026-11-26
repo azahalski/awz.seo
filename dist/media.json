@@ -1,0 +1,352 @@
+{
+ "art-canonical": {
+  "bytes": 63367,
+  "file": "/home/andrew/desc_out/awz.seo/media/desc-art--seo-canonical.png",
+  "h": 572,
+  "mime": "image/png",
+  "sha256": "6a548b5d6df4014ba318950929a6efd8fffbb1aec40b3b1c953ecfdeb66d1f04",
+  "source_bytes": 63367,
+  "url": "https://zahalski.dev/upload/awz.load.ai/pvbi2tj6ar.png",
+  "w": 1024
+ },
+ "art-hero": {
+  "bytes": 102656,
+  "file": "media/desc-art--seo-hero.png",
+  "h": 572,
+  "mime": "image/png",
+  "sha256": "c8efe92409281181813d627425717d03c3f15c86e4cf689b912930af2006d3a4",
+  "source_bytes": 102656,
+  "url": "https://zahalski.dev/upload/awz.load.ai/25b624drke.png",
+  "w": 1024
+ },
+ "art-meta": {
+  "bytes": 45611,
+  "file": "media/desc-art--seo-meta.png",
+  "h": 572,
+  "mime": "image/png",
+  "sha256": "9ef21bc86a2414c31c7e3111b6dddeaf481cf91ccd568b3e7c1e90c6a53c9551",
+  "source_bytes": 45611,
+  "url": "https://zahalski.dev/upload/awz.load.ai/r334gf2tif.png",
+  "w": 1024
+ },
+ "art-redirects": {
+  "bytes": 46443,
+  "file": "media/desc-art--seo-redirects.png",
+  "h": 572,
+  "mime": "image/png",
+  "sha256": "544a336bdaf3aa005c71a9ec203eb13b3dc3e224ceb96f9fa826fb967da43a61",
+  "source_bytes": 46443,
+  "url": "https://zahalski.dev/upload/awz.load.ai/okf7e4pfjv.png",
+  "w": 1024
+ },
+ "ico-aa": {
+  "bytes": 23168,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--aa.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "59c9b4250bda123f97a9efa0ff9133ae29eaf146e1775dbacc67bb03750d8a0d",
+  "source_bytes": 23168,
+  "url": "https://zahalski.dev/upload/awz.load.ai/5nwkhz5slz.png",
+  "w": 270
+ },
+ "ico-ban": {
+  "bytes": 37643,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--ban.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "2f0e2141fe16a7469ad56c50b45d09c543357d5e407f59065615e0430112c185",
+  "source_bytes": 37643,
+  "url": "https://zahalski.dev/upload/awz.load.ai/iu0mrfljvi.png",
+  "w": 270
+ },
+ "ico-canon": {
+  "bytes": 16416,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--canon.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "ac56e529603a7b4450eac5e7b88e5d5b99314d41bff9c1eadb057828fc472578",
+  "source_bytes": 16416,
+  "url": "https://zahalski.dev/upload/awz.load.ai/1i4o20sll0.png",
+  "w": 270
+ },
+ "ico-code301": {
+  "bytes": 21667,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--code301.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "ba153c10b31f7b57bcb89668d97550590e9a248aba1d9138a528cecb4f3cde2b",
+  "source_bytes": 21667,
+  "url": "https://zahalski.dev/upload/awz.load.ai/3q41i6abwo.png",
+  "w": 270
+ },
+ "ico-csv": {
+  "bytes": 22096,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--csv.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "3eb50990ef9c34b79ce82c33cf150a481768cb1bc51814defb03d3ab67ae4e9f",
+  "source_bytes": 22096,
+  "url": "https://zahalski.dev/upload/awz.load.ai/9m70oz8i0v.png",
+  "w": 270
+ },
+ "ico-desc": {
+  "bytes": 21313,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--desc.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "acf7d5408e015cebcc05f901911853dc6649205fa37e0fba8301a20f549e58f6",
+  "source_bytes": 21313,
+  "url": "https://zahalski.dev/upload/awz.load.ai/gndn5b9ahc.png",
+  "w": 270
+ },
+ "ico-eye": {
+  "bytes": 35290,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--eye.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "ab278a7cc7fd46e229b6ecb06dcebc5eed4dc8c4eb0ac48da5c4eb5c6ada30f9",
+  "source_bytes": 35290,
+  "url": "https://zahalski.dev/upload/awz.load.ai/3w9231rely.png",
+  "w": 270
+ },
+ "ico-filter": {
+  "bytes": 20908,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--filter.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "c2d24b7180313080fd00d23926075f7d9ec17bf3999c74431df4695e144fd6fe",
+  "source_bytes": 20908,
+  "url": "https://zahalski.dev/upload/awz.load.ai/hdin0xvv6j.png",
+  "w": 270
+ },
+ "ico-funnel": {
+  "bytes": 19184,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--funnel.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "90dcf0781b1bab8bf4bb594b1b1f953c150ae7e1de971e1a0967afc651f2d25f",
+  "source_bytes": 19184,
+  "url": "https://zahalski.dev/upload/awz.load.ai/5n7n85izzg.png",
+  "w": 270
+ },
+ "ico-get": {
+  "bytes": 16213,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--get.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "e142e7782635d5f76140fabd559c70a73e0cabf94cf4b83b66f8fa8c890f8d8e",
+  "source_bytes": 16213,
+  "url": "https://zahalski.dev/upload/awz.load.ai/7fg9kf62vy.png",
+  "w": 270
+ },
+ "ico-h1": {
+  "bytes": 15051,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--h1.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "2d936aeba0842724cb4946d1ca6893cd624efe78e617ec59b616041045c8f451",
+  "source_bytes": 15051,
+  "url": "https://zahalski.dev/upload/awz.load.ai/z01rbsxdn2.png",
+  "w": 270
+ },
+ "ico-https": {
+  "bytes": 35827,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--https.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "509b6c373cc0e367e1d1213fd59d2cd76afdf2fdcd02f23f7f496cc531ad26ed",
+  "source_bytes": 35827,
+  "url": "https://zahalski.dev/upload/awz.load.ai/zhi5k1c9k7.png",
+  "w": 270
+ },
+ "ico-index": {
+  "bytes": 15583,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--index.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "15cf69962cfcf769a8eee92704db55042c2b27c4158d7a12153d064f36f58388",
+  "source_bytes": 15583,
+  "url": "https://zahalski.dev/upload/awz.load.ai/q9hncjnxz2.png",
+  "w": 270
+ },
+ "ico-off": {
+  "bytes": 22167,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--off.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "c2300387c9b9752c0fcd62dd3b48bca8a923aa316c51aa3bb64b2bd9a00a534d",
+  "source_bytes": 22167,
+  "url": "https://zahalski.dev/upload/awz.load.ai/o7qt21ik4z.png",
+  "w": 270
+ },
+ "ico-page": {
+  "bytes": 20972,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--page.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "7b4aac197927c07843a0d4229a7b319d123ea6a75bdb1c1682e92f9e26f387a2",
+  "source_bytes": 20972,
+  "url": "https://zahalski.dev/upload/awz.load.ai/9lb9gyub2n.png",
+  "w": 270
+ },
+ "ico-pg": {
+  "bytes": 8828,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--pg.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "3784315b7cd5f433f8719509884967e7a93e40d5c552c1bedc1b7aea17abba8a",
+  "source_bytes": 8828,
+  "url": "https://zahalski.dev/upload/awz.load.ai/lqmewkadgt.png",
+  "w": 270
+ },
+ "ico-redirect": {
+  "bytes": 13476,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--redirect.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "3e3342f077ac21b9358283bd19b3422547aee96fc063485dc6aee56565b87436",
+  "source_bytes": 13476,
+  "url": "https://zahalski.dev/upload/awz.load.ai/h07ch8hb8f.png",
+  "w": 270
+ },
+ "ico-regex": {
+  "bytes": 27021,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--regex.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "2bd2af074384fea85cf8c7e2c0dcbbdf96c733bb5a4cbfad60c7eefb9561b3c4",
+  "source_bytes": 27021,
+  "url": "https://zahalski.dev/upload/awz.load.ai/dtg7rjdugt.png",
+  "w": 270
+ },
+ "ico-report": {
+  "bytes": 28117,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--report.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "8bcd7a36adcb5c2e11c5a5f792ed4c56bace2036c5bb126d646bdd52775c36c6",
+  "source_bytes": 28117,
+  "url": "https://zahalski.dev/upload/awz.load.ai/up0x7ne6jj.png",
+  "w": 270
+ },
+ "ico-robots": {
+  "bytes": 28112,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--robots.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "c7b79cf28b04291f8402c5017d2f9d7a887112875b40079758a28b6f78b85852",
+  "source_bytes": 28112,
+  "url": "https://zahalski.dev/upload/awz.load.ai/89uj8r9by0.png",
+  "w": 270
+ },
+ "ico-shield": {
+  "bytes": 26825,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--shield.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "b8bca94eb20f7a7ef81d88579589fa9d9342749b4fa34e7df302a28fb3fac571",
+  "source_bytes": 26825,
+  "url": "https://zahalski.dev/upload/awz.load.ai/1r09abcs26.png",
+  "w": 270
+ },
+ "ico-sites": {
+  "bytes": 13338,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--sites.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "27c45c516153ac6d024a02d27cd252c320f5730956f910786b9bba07de28d6b5",
+  "source_bytes": 13338,
+  "url": "https://zahalski.dev/upload/awz.load.ai/ogwevq28ny.png",
+  "w": 270
+ },
+ "ico-slash": {
+  "bytes": 38880,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--slash.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "73c724dd6c3695f60eef11e3ba61b2856eade1abc96181fac228f1ebf6794b4d",
+  "source_bytes": 38880,
+  "url": "https://zahalski.dev/upload/awz.load.ai/q5h2tj4iyd.png",
+  "w": 270
+ },
+ "ico-switch": {
+  "bytes": 24318,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--switch.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "eb7a00428cefcb9a610ab954d843510caabba87f7fa5988b1adbb6df0330d21e",
+  "source_bytes": 24318,
+  "url": "https://zahalski.dev/upload/awz.load.ai/969evokvsw.png",
+  "w": 270
+ },
+ "ico-tag": {
+  "bytes": 13419,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--tag.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "b6a2f791445f0dce39419b159d0c04ef77fe77191f5530510533aadd68a48421",
+  "source_bytes": 13419,
+  "url": "https://zahalski.dev/upload/awz.load.ai/juth8b1axf.png",
+  "w": 270
+ },
+ "ico-ttl": {
+  "bytes": 49825,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--ttl.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "a5436ed56b68e8a3e3c0d495e718dff71e58ccc669d7866dcae4dd30bd6d2a0e",
+  "source_bytes": 49825,
+  "url": "https://zahalski.dev/upload/awz.load.ai/ixtw7d6oq8.png",
+  "w": 270
+ },
+ "ico-www": {
+  "bytes": 41672,
+  "file": "/home/andrew/desc_out/awz.seo/media/ico--www.png",
+  "h": 270,
+  "mime": "image/png",
+  "sha256": "106634d413ad27d63c8ec90696a6c91c7ac241b1a12760461986cd35d12dbfc0",
+  "source_bytes": 41672,
+  "url": "https://zahalski.dev/upload/awz.load.ai/4tnsn6xx6c.png",
+  "w": 270
+ },
+ "shot-canonical": {
+  "bytes": 187257,
+  "file": "/home/andrew/desc_out/awz.seo/media/desc-shot--seo-canonical.png",
+  "h": 714,
+  "mime": "image/png",
+  "sha256": "deaa7cb4d68aa3e16cfdb1b44ca38a8f9f0531bff9db1f0693c171b3311547a2",
+  "source_bytes": 187257,
+  "url": "https://zahalski.dev/upload/awz.load.ai/j85z0y3etw.png",
+  "w": 1024
+ },
+ "shot-meta": {
+  "bytes": 219790,
+  "file": "/home/andrew/desc_out/awz.seo/media/desc-shot--seo-meta.png",
+  "h": 714,
+  "mime": "image/png",
+  "sha256": "24dfde33582786be5bdecef533acd253a4be98c7571459e019112494a260bc61",
+  "source_bytes": 219790,
+  "url": "https://zahalski.dev/upload/awz.load.ai/0cd0eve4yb.png",
+  "w": 1024
+ },
+ "shot-redirects": {
+  "bytes": 229198,
+  "file": "/home/andrew/desc_out/awz.seo/media/desc-shot--seo-redirects.png",
+  "h": 714,
+  "mime": "image/png",
+  "sha256": "4f2d870db975f206316079e40274f0a8c9f3b81a54b44095a3ff5b0e2a24b235",
+  "source_bytes": 229198,
+  "url": "https://zahalski.dev/upload/awz.load.ai/bj1kmubhe3.png",
+  "w": 1024
+ },
+ "spacer": {
+  "bytes": 71,
+  "file": "/var/www/img/desc-spacer.png",
+  "h": 10,
+  "mime": "image/png",
+  "sha256": "9058a5a9be40d9aac111e1f43126aec5d6e8c5d1a9ee69ce5976a87233b9a3b0",
+  "source_bytes": 71,
+  "url": "https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png",
+  "w": 10
+ }
+}

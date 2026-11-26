@@ -1,99 +1,78 @@
-РњРѕРґСѓР»СЊ **AWZ: SEO** РїСЂРµРґРЅР°Р·РЅР°С‡РµРЅ РґР»СЏ РѕРїС‚РёРјРёР·Р°С†РёРё РїРѕРёСЃРєРѕРІС‹С… РїР°СЂР°РјРµС‚СЂРѕРІ СЃР°Р№С‚Р° РЅР° РїР»Р°С‚С„РѕСЂРјРµ 1C-Bitrix. РћРЅ РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РєРѕРјРїР»РµРєСЃРЅС‹Р№ РЅР°Р±РѕСЂ РёРЅСЃС‚СЂСѓРјРµРЅС‚РѕРІ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ СЂРµРґРёСЂРµРєС‚Р°РјРё, canonical-С‚РµРіР°РјРё, meta-С‚РµРіР°РјРё Рё СЃРёСЃС‚РµРјРѕР№ РїСЂР°РІ РґРѕСЃС‚СѓРїР°.
+[center]Редиректы, canonical и meta-теги для 1С-Битрикс настраиваются в админке -[/center]
+[center]без правок PHP, шаблонов и [b].htaccess[/b]. Отдельный набор опций для каждого сайта[/center]
+[center]мультидомена, права доступа по уровням и отчёт «что и почему применилось».[/center]
 
-[b=size=28pt]РћСЃРЅРѕРІРЅС‹Рµ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё[/size]
+[center][IMG WIDTH=800 HEIGHT=447]https://zahalski.dev/upload/awz.load.ai/25b624drke.png[/IMG][/center]
 
-[size=24pt]SEO-СЂРµРґРёСЂРµРєС‚С‹ (РѕР±СЂР°Р±РѕС‚РєР° РЅР° СЃРѕР±С‹С‚РёРё OnPageStart)[/size]
+[center][size=18pt][b]Преимущества модуля[/b][/size][/center]
 
-РњРѕРґСѓР»СЊ РїРѕРґРґРµСЂР¶РёРІР°РµС‚ РЅРµСЃРєРѕР»СЊРєРѕ С‚РёРїРѕРІ СЂРµРґРёСЂРµРєС‚РѕРІ СЃ Р·Р°С‰РёС‚РѕР№ РѕС‚ Р·Р°С†РёРєР»РёРІР°РЅРёСЏ (С†РµРїРѕС‡РєР° РѕРіСЂР°РЅРёС‡РµРЅР° 5 С€Р°РіР°РјРё):
+[center]
+[TABLE]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=72 HEIGHT=72]https://zahalski.dev/upload/awz.load.ai/ogwevq28ny.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=72 HEIGHT=72]https://zahalski.dev/upload/awz.load.ai/up0x7ne6jj.png[/IMG][/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Отдельные опции для каждого сайта[/b] Настройки хранятся по site_id: для основного и каждого дополнительного домена - свой набор редиректов, canonical и meta. Переключение сайта - выпадающим списком в шапке формы.[/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Внешний сервис отчётов[/b] Кнопка «Проверить настройки» отправляет текущие настройки сайта во внешний сервис и возвращает отчёт о проверке редиректов и canonical - без ручного прогона адресов.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=72 HEIGHT=72]https://zahalski.dev/upload/awz.load.ai/1r09abcs26.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=72 HEIGHT=72]https://zahalski.dev/upload/awz.load.ai/969evokvsw.png[/IMG][/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Ролевая модель прав доступа[/b] Просмотр вкладки и изменение настроек - отдельные права. Можно оставить за отделом маркетинга только чтение, а запись закрыть по группе.[/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Без правок шаблонов и .htaccess[/b] Редиректы отрабатывают на OnPageStart, canonical и meta - на OnEpilog. Обычные адреса и заголовки приводятся к одному виду без изменения кода компонентов.[/TD][/TR]
+[/TABLE]
+[/center]
 
-[list]
-[*]- [b]Р РµРґРёСЂРµРєС‚ СЃ РјРЅРѕР¶РµСЃС‚РІР° СЃР»РµС€РµР№ РЅР° РѕРґРёРЅ[/b] вЂ” РЅР°РїСЂРёРјРµСЂ, `https://site//path///to///page` в†’ `https://site/path/to/page`
-[*]- [b]Р РµРґРёСЂРµРєС‚ Р±РµР· СЃР»РµС€Р° РЅР° СЃРѕ СЃР»РµС€РµРј[/b] вЂ” РЅР°РїСЂРёРјРµСЂ, `/path` в†’ `/path/`. РЎР»РµС€ РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РїРµСЂРµРґ GET-РїР°СЂР°РјРµС‚СЂР°РјРё: `/path?a=b` в†’ `/path/?a=b`. URL СЃ СЂР°СЃС€РёСЂРµРЅРёСЏРјРё С„Р°Р№Р»РѕРІ (.html, .php Рё С‚.Рї.) РЅРµ Р·Р°С‚СЂР°РіРёРІР°СЋС‚СЃСЏ
-[*]- [b]Р РµРґРёСЂРµРєС‚ СЃ http РЅР° https[/b] вЂ” РІСЃРµ http-Р·Р°РїСЂРѕСЃС‹ РїРµСЂРµРЅР°РїСЂР°РІР»СЏСЋС‚СЃСЏ РЅР° https СЃ СЃРѕС…СЂР°РЅРµРЅРёРµРј РїСѓС‚Рё Рё GET-РїР°СЂР°РјРµС‚СЂРѕРІ
-[*]- [b]Р РµРґРёСЂРµРєС‚ СЃ index.php РЅР° СЃР»РµС€[/b] вЂ” РЅР°РїСЂРёРјРµСЂ, `/index.php` в†’ `/`, `/path/index.php` в†’ `/path/`. GET-РїР°СЂР°РјРµС‚СЂС‹ СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ: `/index.php?a=b` в†’ `/?a=b`
-[*]- [b]Р РµРґРёСЂРµРєС‚ www / Р±РµР· www[/b] вЂ” РїРµСЂРµРЅР°РїСЂР°РІР»РµРЅРёРµ РјРµР¶РґСѓ РІРµСЂСЃРёСЏРјРё С…РѕСЃС‚Р° СЃ www Рё Р±РµР· www. РњРѕР¶РЅРѕ РІС‹Р±СЂР°С‚СЊ С‚РѕР»СЊРєРѕ РѕРґРЅРѕ РЅР°РїСЂР°РІР»РµРЅРёРµ (РёР»Рё РІС‹РєР»СЋС‡РёС‚СЊ) вЂ” СЌС‚Рѕ РёСЃРєР»СЋС‡Р°РµС‚ Р·Р°С†РёРєР»РёРІР°РЅРёРµ СЂРµРґРёСЂРµРєС‚РѕРІ
-[*]- [b]РљР°СЃС‚РѕРјРЅС‹Рµ СЂРµРґРёСЂРµРєС‚С‹ (CSV)[/b] вЂ” РїР°СЂС‹ В«СЃС‚Р°СЂС‹Р№ URL, РЅРѕРІС‹Р№ URLВ» РёР· CSV-С„Р°Р№Р»Р°. РћР±СЂР°Р±Р°С‚С‹РІР°СЋС‚СЃСЏ СЃ РїСЂРёРѕСЂРёС‚РµС‚РѕРј РЅР°Рґ РѕСЃС‚Р°Р»СЊРЅС‹РјРё СЂРµРґРёСЂРµРєС‚Р°РјРё
-[/list]
+[center][size=18pt][b]SEO-редиректы[/b][/size][/center]
 
-РќР°СЃС‚СЂРѕР№РєР° РєРѕРґР° РѕС‚РІРµС‚Р° СЂРµРґРёСЂРµРєС‚Р°: 301 (РїРѕСЃС‚РѕСЏРЅРЅС‹Р№) РёР»Рё 302 (РІСЂРµРјРµРЅРЅС‹Р№).
+[center]Дубли адресов - [b]/page[/b] и [b]/page/[/b], [b]index.php[/b], [b]?PAGEN_1=1[/b] - поисковик склеивает[/center]
+[center]с потерей ссылочного веса. Модуль ставит обработчик на [b]OnPageStart[/b]: редирект уходит[/center]
+[center]до генерации страницы, код ответа 301/302 выбирается один раз для всех правил.[/center]
 
-[size=24pt]Canonical-С‚РµРіРё (РѕР±СЂР°Р±РѕС‚РєР° РЅР° СЃРѕР±С‹С‚РёРё OnEpilog)[/size]
+[center][IMG WIDTH=800 HEIGHT=447]https://zahalski.dev/upload/awz.load.ai/okf7e4pfjv.png[/IMG][/center]
 
-Р“РёР±РєР°СЏ РЅР°СЃС‚СЂРѕР№РєР° С‚РµРіР° `[code]link rel="canonical"[/code]`:
+[TABLE]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Опция[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Название в настройках[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Что делает[/B][/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/q5h2tj4iyd.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Множество слешей -> один[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]«site//path///to///page» -> «site/path/to/page»: лишние слеши в пути и хвосте убираются.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/h07ch8hb8f.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Слеш в конце адреса[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]«/path» -> «/path/», слеш ставится перед GET-параметрами: «/path?a=b» -> «/path/?a=b». Адреса с расширениями (.html, .php) не трогаются.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/zhi5k1c9k7.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]http -> https[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Все http-запросы уводятся на https с сохранением пути и GET-параметров.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/q9hncjnxz2.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]index.php -> слеш[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]«/index.php» -> «/», «/path/index.php» -> «/path/», параметры сохраняются: «/index.php?a=b» -> «/?a=b».[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/9lb9gyub2n.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Первая страница пагинации[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]«/catalog/?PAGEN_1=1» -> «/catalog/»: с первой страницы пагинации уходит параметр, остальные GET-параметры остаются.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/4tnsn6xx6c.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]www / без www[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Перенаправление между хостом с www и без. Выбрать можно только одно направление - это исключает зацикливание редиректов.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/3q41i6abwo.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Код ответа редиректа[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]301 - постоянный, кэшируется браузером и поисковиками; 302 - временный. Настройка одна на все редиректы модуля.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/9m70oz8i0v.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Кастомные редиректы из CSV[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Пары «старый URL, новый URL» из файла хранилища Битрикс, приоритет над остальными правилами, цепочка ограничена 5 шагами.[/TD][/TR]
+[/TABLE]
 
-[list]
-[*]- [b]Р РµР¶РёРјС‹ РІС‹РІРѕРґР°[/b]: РІС‹РєР»СЋС‡РµРЅ, РґРѕР±Р°РІР»СЏС‚СЊ РІСЃРµРіРґР° РґР»СЏ С‚РµРєСѓС‰РµР№ СЃС‚СЂР°РЅРёС†С‹, РґРѕР±Р°РІР»СЏС‚СЊ С‚РѕР»СЊРєРѕ РµСЃР»Рё РµСЃС‚СЊ GET-РїР°СЂР°РјРµС‚СЂС‹
-[*]- [b]РЎС‚СЂР°РЅРёС†С‹ РїР°РіРёРЅР°С†РёРё РЅРµ РєР°РЅРѕРЅРёС‡РµСЃРєРёРµ[/b] вЂ” РёР· canonical РёСЃРєР»СЋС‡Р°СЋС‚СЃСЏ РїР°СЂР°РјРµС‚СЂС‹ РїР°РіРёРЅР°С†РёРё `PAGEN_N`: `/catalog/?PAGEN_1=2` в†’ canonical РЅР° `/catalog/`
-[*]- [b]РСЃРєР»СЋС‡Р°С‚СЊ GET-РїР°СЂР°РјРµС‚СЂС‹ РёР· canonical[/b] вЂ” canonical СѓРєР°Р·С‹РІР°РµС‚ РЅР° С‡РёСЃС‚С‹Р№ URL СЃС‚СЂР°РЅРёС†С‹ Р±РµР· query-СЃС‚СЂРѕРєРё (РєСЂРѕРјРµ РїР°СЂР°РјРµС‚СЂРѕРІ РёР· СЃРїРёСЃРєР° РёСЃРєР»СЋС‡РµРЅРёР№)
-[*]- [b]Canonical РІСЃРµРіРґР° СЃ https[/b] вЂ” РІ С‚РµРіРµ canonical СЃС…РµРјР° https РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РЅРµР·Р°РІРёСЃРёРјРѕ РѕС‚ СЃС…РµРјС‹ С‚РµРєСѓС‰РµРіРѕ Р·Р°РїСЂРѕСЃР°
-[*]- [b]Р—Р°РјРµРЅСЏС‚СЊ index.php РЅР° СЃР»РµС€ РІ canonical[/b] вЂ” `/index.php` в†’ `https://site/`, `/path/index.php` в†’ `https://site/path/`
-[*]- [b]РќРµ РІС‹РІРѕРґРёС‚СЊ canonical РЅР° СЃС‚СЂР°РЅРёС†Р°С… РѕС€РёР±РѕРє[/b] вЂ” РґР»СЏ СЃС‚СЂР°РЅРёС† СЃ РєРѕРґРѕРј РѕС‚РІРµС‚Р° 4xx/5xx (404 Рё РґСЂ.) С‚РµРі canonical РЅРµ РІС‹РІРѕРґРёС‚СЃСЏ
-[*]- [b]РџРµСЂРµР·Р°РїРёСЃС‹РІР°С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ canonical[/b] вЂ” РїСЂРё РІС‹РєР»СЋС‡РµРЅРЅРѕР№ РѕРїС†РёРё РјРѕРґСѓР»СЊ РЅРµ РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµС‚ canonical, СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Р№ РІС‹С€Рµ РїРѕ РєРѕРґСѓ (РєРѕРјРїРѕРЅРµРЅС‚Р°РјРё РёР»Рё С€Р°Р±Р»РѕРЅРѕРј СЃР°Р№С‚Р°)
-[*]- [b]РЎРѕС…СЂР°РЅСЏС‚СЊ GET-РїР°СЂР°РјРµС‚СЂС‹ РІ canonical[/b] вЂ” СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ (РЅР°РїСЂРёРјРµСЂ: `utm_source,utm_medium`), РґРµР№СЃС‚РІСѓСЋС‚ РїСЂРё РІРєР»СЋС‡С‘РЅРЅРѕРј РёСЃРєР»СЋС‡РµРЅРёРё GET-РїР°СЂР°РјРµС‚СЂРѕРІ
-[*]- [b]РџСЂР°РІРёР»Р° preg_replace РґР»СЏ canonical[/b] вЂ” РјРЅРѕР¶РµСЃС‚РІРµРЅРЅС‹Рµ РїСЂР°РІРёР»Р° from в†’ to, РїСЂРёРјРµРЅСЏСЋС‚СЃСЏ Рє РёС‚РѕРіРѕРІРѕРјСѓ canonical URL РїРѕ РїРѕСЂСЏРґРєСѓ. From вЂ” РїРѕР»РЅРѕРµ СЂРµРіСѓР»СЏСЂРЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ СЃ РѕРіСЂР°РЅРёС‡РёС‚РµР»СЏРјРё, To вЂ” Р·Р°РјРµРЅР°
-[/list]
+[center][size=18pt][b]Canonical-тег[/b][/size][/center]
 
-[size=24pt]Meta-С‚РµРіРё (РѕР±СЂР°Р±РѕС‚РєР° РЅР° СЃРѕР±С‹С‚РёРё OnEpilog)[/size]
+[center][b]&lt;link rel="canonical"&gt;[/b] указывает, какой адрес считать основным для дубля:[/center]
+[center]фильтр в каталоге, страница пагинации, 404, [b]index.php[/b] в конце. Тег ставится на[/center]
+[center][b]OnEpilog[/b] по девяти правилам, а не по одной галке.[/center]
 
-РЈРїСЂР°РІР»РµРЅРёРµ meta-С‚РµРіР°РјРё Рё РїРѕРјРµС‚РєРѕР№ СЃС‚СЂР°РЅРёС† РїР°РіРёРЅР°С†РёРё:
+[center][IMG WIDTH=800 HEIGHT=447]https://zahalski.dev/upload/awz.load.ai/pvbi2tj6ar.png[/IMG][/center]
 
-[list]
-[*]- [b]РћС‡РёС‰Р°С‚СЊ meta keywords[/b] вЂ” СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ С‚РµРі `meta name="keywords"` РїСѓСЃС‚С‹Рј РЅР° РІСЃРµС… СЃС‚СЂР°РЅРёС†Р°С… СЃР°Р№С‚Р°
-[*]- [b]РњРµС‚РєР° СЃС‚СЂР°РЅРёС†С‹ РїР°РіРёРЅР°С†РёРё[/b] вЂ” РЅР° СЃС‚СЂР°РЅРёС†Р°С… РїР°РіРёРЅР°С†РёРё (РїР°СЂР°РјРµС‚СЂС‹ `PAGEN_N`) РґРѕР±Р°РІР»СЏРµС‚ РЅРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹ РІ title, description Рё Р·Р°РіРѕР»РѕРІРѕРє СЃС‚СЂР°РЅРёС†С‹ РїРѕ С€Р°Р±Р»РѕРЅР°Рј СЃ РјР°РєСЂРѕСЃРѕРј `#PAGE#`
-  - РќР°СЃС‚СЂРѕР№РєР° РЅРѕРјРµСЂР° СЃС‚СЂР°РЅРёС†С‹, РЅР°С‡РёРЅР°СЏ СЃ РєРѕС‚РѕСЂРѕР№ РґРѕР±Р°РІР»СЏС‚СЊ РјРµС‚РєСѓ (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ СЃРѕ 2-Р№)
-  - РЁР°Р±Р»РѕРЅ РґР»СЏ `title` (`$APPLICATION->SetTitle`)
-  - РЁР°Р±Р»РѕРЅ РґР»СЏ `meta description`
-  - РЁР°Р±Р»РѕРЅ РґР»СЏ Р·Р°РіРѕР»РѕРІРєР° СЃС‚СЂР°РЅРёС†С‹ (`PAGE_TITLE`, РѕР±С‹С‡РЅРѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ H1)
-[/list]
+[TABLE]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Опция[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Название в настройках[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Что делает[/B][/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/1i4o20sll0.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Вывод тега canonical[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Три режима: выключен, добавлять всегда для текущей страницы, добавлять только если есть GET-параметры.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/7fg9kf62vy.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Исключать GET-параметры[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Canonical указывает на чистый URL страницы без query-строки, кроме параметров из списка исключений.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/hdin0xvv6j.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Сохранять в canonical параметры[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Список имён через запятую (например «utm_source,utm_medium»), которые остаются в теге при включённой обрезке параметров.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/5n7n85izzg.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Пагинация не каноническая[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Из canonical исключаются параметры PAGEN_N: «/catalog/?PAGEN_1=2» -> canonical на «/catalog/».[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/zhi5k1c9k7.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Canonical всегда с https[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]В теге схема https независимо от схемы текущего запроса.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/q9hncjnxz2.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]index.php -> слеш в canonical[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]«/index.php» -> «домен/», «/path/index.php» -> «домен/path/».[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/o7qt21ik4z.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Страницы ошибок без canonical[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Для ответов 4xx/5xx (404 и другие) тег не выводится - мусор не ссылается на себя.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/3q41i6abwo.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Не переопределять существующий[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]С выключенной опцией модуль не трогает canonical, который поставили компоненты или шаблон сайта выше по коду.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/dtg7rjdugt.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Правила preg_replace[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Пары from -> to, применяются к итоговому canonical URL по порядку. From - регулярка с ограничителями, To - замена.[/TD][/TR]
+[/TABLE]
 
-[b=size=28pt]Options and Configuration[/size]
+[center][size=18pt][b]Meta-теги[/b][/size][/center]
 
-Р’СЃРµ РЅР°СЃС‚СЂРѕР№РєРё РјРѕРґСѓР»СЏ С…СЂР°РЅСЏС‚СЃСЏ СЂР°Р·РґРµР»СЊРЅРѕ РґР»СЏ РєР°Р¶РґРѕРіРѕ СЃР°Р№С‚Р° (РјРЅРѕРіРѕСЃР°Р№С‚РѕРІРѕСЃС‚СЊ) СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј `\Bitrix\Main\Config\Option`.
+[center]Title, description и H1 формирует компонент, и типовой текст повторяется на десятках[/center]
+[center]страниц - одинаковые title режут кликабельность в выдаче. Модуль дописывает номер[/center]
+[center]страницы пагинации по шаблонам с макросом [b]#PAGE#[/b] и закрывает индексацию dev-сайта.[/center]
 
-[b=size=24pt]РћР±С‰РёРµ РЅР°СЃС‚СЂРѕР№РєРё[/size]
+[center][IMG WIDTH=800 HEIGHT=447]https://zahalski.dev/upload/awz.load.ai/r334gf2tif.png[/IMG][/center]
 
-| РћРїС†РёСЏ | РћРїРёСЃР°РЅРёРµ |
-|-------|----------|
-| `SITE_ID` | Р’С‹Р±РѕСЂ СЃР°Р№С‚Р° РґР»СЏ РЅР°СЃС‚СЂРѕР№РєРё |
-| РџСЂР°РІР° РґРѕСЃС‚СѓРїР° | РќР°СЃС‚СЂРѕР№РєР° РїСЂР°РІ РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР° Рё СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РЅР°СЃС‚СЂРѕРµРє РјРѕРґСѓР»СЏ |
-
-[b=size=24pt]РќР°СЃС‚СЂРѕР№РєРё СЂРµРґРёСЂРµРєС‚РѕРІ[/size]
-
-| РћРїС†РёСЏ | РћРїРёСЃР°РЅРёРµ |
-|-------|----------|
-| `REDIRECT_MULTI_SLASH` | Р РµРґРёСЂРµРєС‚ СЃ РјРЅРѕР¶РµСЃС‚РІР° СЃР»РµС€РµР№ РЅР° РѕРґРёРЅ (`Y`/`N`) |
-| `REDIRECT_SLASH_END` | Р РµРґРёСЂРµРєС‚ Р±РµР· СЃР»РµС€Р° РЅР° СЃРѕ СЃР»РµС€РµРј (`Y`/`N`) |
-| `REDIRECT_HTTPS` | Р РµРґРёСЂРµРєС‚ СЃ http РЅР° https (`Y`/`N`) |
-| `REDIRECT_INDEX_SLASH` | Р РµРґРёСЂРµРєС‚ СЃ index.php РЅР° СЃР»РµС€ (`Y`/`N`) |
-| `REDIRECT_CODE` | РљРѕРґ РѕС‚РІРµС‚Р°: `301` (РїРѕСЃС‚РѕСЏРЅРЅС‹Р№) РёР»Рё `302` (РІСЂРµРјРµРЅРЅС‹Р№) |
-| `REDIRECT_WWW` | Р РµРґРёСЂРµРєС‚ www: `N` (РІС‹РєР»СЋС‡РµРЅ), `W` (wwwв†’Р±РµР· www), `NW` (Р±РµР· wwwв†’www) |
-| `REDIRECT_CUSTOM_PATH` | РџСѓС‚СЊ Рє CSV-С„Р°Р№Р»Сѓ СЃ РєР°СЃС‚РѕРјРЅС‹РјРё СЂРµРґРёСЂРµРєС‚Р°РјРё |
-
-[b=size=24pt]РќР°СЃС‚СЂРѕР№РєРё canonical[/size]
-
-| РћРїС†РёСЏ | РћРїРёСЃР°РЅРёРµ |
-|-------|----------|
-| `CANONICAL_MODE` | Р РµР¶РёРј: `N` (РІС‹РєР»СЋС‡РµРЅ), `A` (РІСЃРµРіРґР°), `G` (С‚РѕР»СЊРєРѕ СЃ GET) |
-| `CANONICAL_PAGEN_NONCANONICAL` | РЎС‚СЂР°РЅРёС†С‹ РїР°РіРёРЅР°С†РёРё РЅРµ РєР°РЅРѕРЅРёС‡РµСЃРєРёРµ (`Y`/`N`) |
-| `CANONICAL_STRIP_GET` | РСЃРєР»СЋС‡Р°С‚СЊ GET-РїР°СЂР°РјРµС‚СЂС‹ РёР· canonical (`Y`/`N`) |
-| `CANONICAL_KEEP_GET` | РЎРїРёСЃРѕРє GET-РїР°СЂР°РјРµС‚СЂРѕРІ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ |
-| `CANONICAL_HTTPS` | Canonical РІСЃРµРіРґР° СЃ https (`Y`/`N`) |
-| `CANONICAL_INDEX_SLASH` | Р—Р°РјРµРЅСЏС‚СЊ index.php РЅР° СЃР»РµС€ (`Y`/`N`) |
-| `CANONICAL_SKIP_ERRORS` | РќРµ РІС‹РІРѕРґРёС‚СЊ canonical РЅР° СЃС‚СЂР°РЅРёС†Р°С… РѕС€РёР±РѕРє (`Y`/`N`) |
-| `CANONICAL_OVERRIDE` | РџРµСЂРµР·Р°РїРёСЃС‹РІР°С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ canonical (`Y`/`N`) |
-| `CANONICAL_REGEX` | РџСЂР°РІРёР»Р° preg_replace РґР»СЏ canonical (СЃРµСЂРёР°Р»РёР·РѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ) |
-
-[b=size=24pt]РќР°СЃС‚СЂРѕР№РєРё meta[/size]
-
-| РћРїС†РёСЏ | РћРїРёСЃР°РЅРёРµ |
-|-------|----------|
-| `META_KEYWORDS_CLEAN` | РћС‡РёС‰Р°С‚СЊ meta keywords (`Y`/`N`) |
-| `META_PAGEN_ENABLE` | Р’РєР»СЋС‡РёС‚СЊ РѕР±СЂР°Р±РѕС‚РєСѓ СЃС‚СЂР°РЅРёС† РїР°РіРёРЅР°С†РёРё (`Y`/`N`) |
-| `META_PAGEN_FROM` | РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹, РЅР°С‡РёРЅР°СЏ СЃ РєРѕС‚РѕСЂРѕР№ РґРѕР±Р°РІР»СЏС‚СЊ РјРµС‚РєСѓ |
-| `META_PAGEN_TITLE_TEMPLATE` | РЁР°Р±Р»РѕРЅ РґР»СЏ title (РјР°РєСЂРѕСЃ `#PAGE#`) |
-| `META_PAGEN_DESCRIPTION_TEMPLATE` | РЁР°Р±Р»РѕРЅ РґР»СЏ description (РјР°РєСЂРѕСЃ `#PAGE#`) |
-| `META_PAGEN_PAGE_TITLE_TEMPLATE` | РЁР°Р±Р»РѕРЅ РґР»СЏ Р·Р°РіРѕР»РѕРІРєР° СЃС‚СЂР°РЅРёС†С‹ (РјР°РєСЂРѕСЃ `#PAGE#`) |
-
-[b=size=24pt]РџСЂРѕРІРµСЂРєР° РЅР°СЃС‚СЂРѕРµРє[/size]
-
-РњРѕРґСѓР»СЊ РїСЂРµРґРѕСЃС‚Р°РІР»СЏРµС‚ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РѕС‚РїСЂР°РІРёС‚СЊ С‚РµРєСѓС‰РёРµ РЅР°СЃС‚СЂРѕР№РєРё СЃР°Р№С‚Р° РІРѕ РІРЅРµС€РЅРёР№ СЃРµСЂРІРёСЃ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ РѕС‚С‡С‘С‚Р° Рѕ РїСЂРѕРІРµСЂРєРµ СЂРµРґРёСЂРµРєС‚РѕРІ Рё canonical.
+[TABLE]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Опция[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Название в настройках[/B][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][B]Что делает[/B][/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/5nwkhz5slz.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Очищать meta keywords[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Устанавливает тег «keywords» пустым на всех страницах сайта - чистит метаполе, которое поисковики не используют.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/juth8b1axf.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Метка страницы пагинации[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]На страницах PAGEN_N добавляет номер страницы в title, description и заголовок страницы по шаблонам с макросом #PAGE#.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/lqmewkadgt.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Начиная с номера страницы[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]С какой страницы пагинации начинать метку. По умолчанию со второй - первая остаётся без изменений.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/ixtw7d6oq8.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Шаблон для title[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Дописывается в конец title, #PAGE# заменяется номером. Например «- страница #PAGE#». Пусто - не изменять.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/gndn5b9ahc.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Шаблон для description[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Дописывается в конец meta description с тем же макросом. Например «(страница #PAGE#)». Пусто - не изменять.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/z01rbsxdn2.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Шаблон для заголовка страницы[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Дописывается в конец PAGE_TITLE - это H1 в шаблонах сайтов. Пусто - не изменять.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/3w9231rely.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Принудительный index, follow[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]На все страницы выводится robots «index, follow». Работает, если не включён запрет индексации и сайт не dev-версия.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/iu0mrfljvi.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Принудительный noindex, nofollow[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Полный запрет индексации сайта: переопределяет dev-режим и опцию index, follow.[/TD][/TR]
+[TR][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][IMG WIDTH=44 HEIGHT=44]https://zahalski.dev/upload/awz.load.ai/89uj8r9by0.png[/IMG][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG][b]Запрет индексации для dev-сервера[/b][/TD][TD][IMG WIDTH=10 HEIGHT=10]https://zahalski.dev/upload/awz.load.ai/c0sa3w4hae.png[/IMG]Если в главном модуле помечен dev-режим, на все страницы ставится «noindex, nofollow».[/TD][/TR]
+[/TABLE]
