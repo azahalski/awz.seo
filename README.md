@@ -52,47 +52,39 @@
 
 ### Общие настройки
 
-| Опция | Описание |
-|-------|----------|
-| `SITE_ID` | Выбор сайта для настройки |
-| Права доступа | Настройка прав для просмотра и редактирования настроек модуля |
+- `SITE_ID` — Выбор сайта для настройки
+- Права доступа — Настройка прав для просмотра и редактирования настроек модуля
 
 ### Настройки редиректов
 
-| Опция | Описание |
-|-------|----------|
-| `REDIRECT_MULTI_SLASH` | Редирект с множества слешей на один (`Y`/`N`) |
-| `REDIRECT_SLASH_END` | Редирект без слеша на со слешем (`Y`/`N`) |
-| `REDIRECT_HTTPS` | Редирект с http на https (`Y`/`N`) |
-| `REDIRECT_INDEX_SLASH` | Редирект с index.php на слеш (`Y`/`N`) |
-| `REDIRECT_CODE` | Код ответа: `301` (постоянный) или `302` (временный) |
-| `REDIRECT_WWW` | Редирект www: `N` (выключен), `W` (www→без www), `NW` (без www→www) |
-| `REDIRECT_CUSTOM_PATH` | Путь к CSV-файлу с кастомными редиректами |
+- `REDIRECT_MULTI_SLASH` — Редирект с множества слешей на один (`Y`/`N`)
+- `REDIRECT_SLASH_END` — Редирект без слеша на со слешем (`Y`/`N`)
+- `REDIRECT_HTTPS` — Редирект с http на https (`Y`/`N`)
+- `REDIRECT_INDEX_SLASH` — Редирект с index.php на слеш (`Y`/`N`)
+- `REDIRECT_CODE` — Код ответа: `301` (постоянный) или `302` (временный)
+- `REDIRECT_WWW` — Редирект www: `N` (выключен), `W` (www→без www), `NW` (без www→www)
+- `REDIRECT_CUSTOM_PATH` — Путь к CSV-файлу с кастомными редиректами
 
 ### Настройки canonical
 
-| Опция | Описание |
-|-------|----------|
-| `CANONICAL_MODE` | Режим: `N` (выключен), `A` (всегда), `G` (только с GET) |
-| `CANONICAL_PAGEN_NONCANONICAL` | Страницы пагинации не канонические (`Y`/`N`) |
-| `CANONICAL_STRIP_GET` | Исключать GET-параметры из canonical (`Y`/`N`) |
-| `CANONICAL_KEEP_GET` | Список GET-параметров для сохранения через запятую |
-| `CANONICAL_HTTPS` | Canonical всегда с https (`Y`/`N`) |
-| `CANONICAL_INDEX_SLASH` | Заменять index.php на слеш (`Y`/`N`) |
-| `CANONICAL_SKIP_ERRORS` | Не выводить canonical на страницах ошибок (`Y`/`N`) |
-| `CANONICAL_OVERRIDE` | Перезаписывать существующий canonical (`Y`/`N`) |
-| `CANONICAL_REGEX` | Правила preg_replace для canonical (сериализованный массив) |
+- `CANONICAL_MODE` — Режим: `N` (выключен), `A` (всегда), `G` (только с GET)
+- `CANONICAL_PAGEN_NONCANONICAL` — Страницы пагинации не канонические (`Y`/`N`)
+- `CANONICAL_STRIP_GET` — Исключать GET-параметры из canonical (`Y`/`N`)
+- `CANONICAL_KEEP_GET` — Список GET-параметров для сохранения через запятую
+- `CANONICAL_HTTPS` — Canonical всегда с https (`Y`/`N`)
+- `CANONICAL_INDEX_SLASH` — Заменять index.php на слеш (`Y`/`N`)
+- `CANONICAL_SKIP_ERRORS` — Не выводить canonical на страницах ошибок (`Y`/`N`)
+- `CANONICAL_OVERRIDE` — Перезаписывать существующий canonical (`Y`/`N`)
+- `CANONICAL_REGEX` — Правила preg_replace для canonical (сериализованный массив)
 
 ### Настройки meta
 
-| Опция | Описание |
-|-------|----------|
-| `META_KEYWORDS_CLEAN` | Очищать meta keywords (`Y`/`N`) |
-| `META_PAGEN_ENABLE` | Включить обработку страниц пагинации (`Y`/`N`) |
-| `META_PAGEN_FROM` | Номер страницы, начиная с которой добавлять метку |
-| `META_PAGEN_TITLE_TEMPLATE` | Шаблон для title (макрос `#PAGE#`) |
-| `META_PAGEN_DESCRIPTION_TEMPLATE` | Шаблон для description (макрос `#PAGE#`) |
-| `META_PAGEN_PAGE_TITLE_TEMPLATE` | Шаблон для заголовка страницы (макрос `#PAGE#`) |
+- `META_KEYWORDS_CLEAN` — Очищать meta keywords (`Y`/`N`)
+- `META_PAGEN_ENABLE` — Включить обработку страниц пагинации (`Y`/`N`)
+- `META_PAGEN_FROM` — Номер страницы, начиная с которой добавлять метку
+- `META_PAGEN_TITLE_TEMPLATE` — Шаблон для title (макрос `#PAGE#`)
+- `META_PAGEN_DESCRIPTION_TEMPLATE` — Шаблон для description (макрос `#PAGE#`)
+- `META_PAGEN_PAGE_TITLE_TEMPLATE` — Шаблон для заголовка страницы (макрос `#PAGE#`)
 
 ### Проверка настроек
 
