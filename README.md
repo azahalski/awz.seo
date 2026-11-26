@@ -2,6 +2,8 @@
 
 Модуль Bitrix CMS для управления SEO-инструментами сайта: редиректы, canonical-теги, meta-теги и система прав доступа.
 
+<!-- desc-start -->
+
 ## Detailed Description
 
 Модуль **AWZ: SEO** предназначен для оптимизации поисковых параметров сайта на платформе 1C-Bitrix. Он предоставляет комплексный набор инструментов для управления редиректами, canonical-тегами, meta-тегами и системой прав доступа.
@@ -52,43 +54,91 @@
 
 ### Общие настройки
 
-- `SITE_ID` — Выбор сайта для настройки
-- Права доступа — Настройка прав для просмотра и редактирования настроек модуля
+| Опция | Описание |
+|-------|----------|
+| `SITE_ID` | Выбор сайта для настройки |
+| Права доступа | Настройка прав для просмотра и редактирования настроек модуля |
 
 ### Настройки редиректов
 
-- `REDIRECT_MULTI_SLASH` — Редирект с множества слешей на один (`Y`/`N`)
-- `REDIRECT_SLASH_END` — Редирект без слеша на со слешем (`Y`/`N`)
-- `REDIRECT_HTTPS` — Редирект с http на https (`Y`/`N`)
-- `REDIRECT_INDEX_SLASH` — Редирект с index.php на слеш (`Y`/`N`)
-- `REDIRECT_CODE` — Код ответа: `301` (постоянный) или `302` (временный)
-- `REDIRECT_WWW` — Редирект www: `N` (выключен), `W` (www→без www), `NW` (без www→www)
-- `REDIRECT_CUSTOM_PATH` — Путь к CSV-файлу с кастомными редиректами
+| Опция | Описание |
+|-------|----------|
+| `REDIRECT_MULTI_SLASH` | Редирект с множества слешей на один (`Y`/`N`) |
+| `REDIRECT_SLASH_END` | Редирект без слеша на со слешем (`Y`/`N`) |
+| `REDIRECT_HTTPS` | Редирект с http на https (`Y`/`N`) |
+| `REDIRECT_INDEX_SLASH` | Редирект с index.php на слеш (`Y`/`N`) |
+| `REDIRECT_CODE` | Код ответа: `301` (постоянный) или `302` (временный) |
+| `REDIRECT_WWW` | Редирект www: `N` (выключен), `W` (www→без www), `NW` (без www→www) |
+| `REDIRECT_CUSTOM_PATH` | Путь к CSV-файлу с кастомными редиректами |
 
 ### Настройки canonical
 
-- `CANONICAL_MODE` — Режим: `N` (выключен), `A` (всегда), `G` (только с GET)
-- `CANONICAL_PAGEN_NONCANONICAL` — Страницы пагинации не канонические (`Y`/`N`)
-- `CANONICAL_STRIP_GET` — Исключать GET-параметры из canonical (`Y`/`N`)
-- `CANONICAL_KEEP_GET` — Список GET-параметров для сохранения через запятую
-- `CANONICAL_HTTPS` — Canonical всегда с https (`Y`/`N`)
-- `CANONICAL_INDEX_SLASH` — Заменять index.php на слеш (`Y`/`N`)
-- `CANONICAL_SKIP_ERRORS` — Не выводить canonical на страницах ошибок (`Y`/`N`)
-- `CANONICAL_OVERRIDE` — Перезаписывать существующий canonical (`Y`/`N`)
-- `CANONICAL_REGEX` — Правила preg_replace для canonical (сериализованный массив)
+| Опция | Описание |
+|-------|----------|
+| `CANONICAL_MODE` | Режим: `N` (выключен), `A` (всегда), `G` (только с GET) |
+| `CANONICAL_PAGEN_NONCANONICAL` | Страницы пагинации не канонические (`Y`/`N`) |
+| `CANONICAL_STRIP_GET` | Исключать GET-параметры из canonical (`Y`/`N`) |
+| `CANONICAL_KEEP_GET` | Список GET-параметров для сохранения через запятую |
+| `CANONICAL_HTTPS` | Canonical всегда с https (`Y`/`N`) |
+| `CANONICAL_INDEX_SLASH` | Заменять index.php на слеш (`Y`/`N`) |
+| `CANONICAL_SKIP_ERRORS` | Не выводить canonical на страницах ошибок (`Y`/`N`) |
+| `CANONICAL_OVERRIDE` | Перезаписывать существующий canonical (`Y`/`N`) |
+| `CANONICAL_REGEX` | Правила preg_replace для canonical (сериализованный массив) |
 
 ### Настройки meta
 
-- `META_KEYWORDS_CLEAN` — Очищать meta keywords (`Y`/`N`)
-- `META_PAGEN_ENABLE` — Включить обработку страниц пагинации (`Y`/`N`)
-- `META_PAGEN_FROM` — Номер страницы, начиная с которой добавлять метку
-- `META_PAGEN_TITLE_TEMPLATE` — Шаблон для title (макрос `#PAGE#`)
-- `META_PAGEN_DESCRIPTION_TEMPLATE` — Шаблон для description (макрос `#PAGE#`)
-- `META_PAGEN_PAGE_TITLE_TEMPLATE` — Шаблон для заголовка страницы (макрос `#PAGE#`)
+| Опция | Описание |
+|-------|----------|
+| `META_KEYWORDS_CLEAN` | Очищать meta keywords (`Y`/`N`) |
+| `META_PAGEN_ENABLE` | Включить обработку страниц пагинации (`Y`/`N`) |
+| `META_PAGEN_FROM` | Номер страницы, начиная с которой добавлять метку |
+| `META_PAGEN_TITLE_TEMPLATE` | Шаблон для title (макрос `#PAGE#`) |
+| `META_PAGEN_DESCRIPTION_TEMPLATE` | Шаблон для description (макрос `#PAGE#`) |
+| `META_PAGEN_PAGE_TITLE_TEMPLATE` | Шаблон для заголовка страницы (макрос `#PAGE#`) |
 
 ### Проверка настроек
 
 Модуль предоставляет возможность отправить текущие настройки сайта во внешний сервис для получения отчёта о проверке редиректов и canonical.
+
+---
+
+<!-- desc-end -->
+
+<!-- dev-start -->
+
+## Документация для разработчиков
+
+### События модуля
+
+| Событие | Обработчик | Описание |
+|---|---|---|
+| `main::OnPageStart` | `\Awz\Seo\Redirect\Handler::OnPageStart` | Обработка редиректов |
+| `main::OnEpilog` | `\Awz\Seo\Canonical\Handler::OnEpilog` | Вывод canonical-тега |
+| `main::OnEpilog` | `\Awz\Seo\Meta\Handler::OnEpilog` | Мета-теги и пагинация |
+| `main::OnAfterUserUpdate` | `\Awz\Seo\Access\Handlers::OnAfterUserUpdate` | Синхронизация прав доступа |
+
+### Проверка прав доступа
+
+```php
+if(\Bitrix\Main\Loader::includeModule('awz.seo')){
+    $allow = \Awz\Seo\Access\AccessController::can(
+        $userId,
+        \Awz\Seo\Access\Custom\ActionDictionary::ACTION_MODULE_SETT_EDIT
+    );
+}
+```
+
+Доступные действия: `ACTION_MODULE_SETT_VIEW/EDIT`, `ACTION_MODULE_RIGHT_VIEW/EDIT`, `ACTION_GENS_PAGE`, `ACTION_GENS_RIGHT`.
+
+<!-- dev-end -->
+
+<!-- cl-start -->
+
+## История версий
+
+https://github.com/azahalski/awz.seo/blob/main/CHANGELOG.md
+
+<!-- cl-end -->
 
 ---
 
