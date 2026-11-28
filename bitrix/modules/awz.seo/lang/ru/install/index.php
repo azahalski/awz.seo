@@ -1,5 +1,5 @@
 <?
-$MESS['AWZ_SEO_MODULE_NAME'] = "AWZ: SEO";
+$MESS['AWZ_SEO_MODULE_NAME'] = "AWZ: SEO Инструменты";
 $MESS['AWZ_SEO_MODULE_DESCRIPTION'] = "SEO-инструменты для сайта";
 $MESS['AWZ_PARTNER_NAME'] = "Andrew Zahalski";
 $MESS['MOD_UNINST_SAVE_OPTS'] = "Вы можете сохранить основные настройки модуля";
